@@ -10,6 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import rebus.permissionutils.AskAgainCallback;
+import rebus.permissionutils.FullCallback;
+import rebus.permissionutils.PermissionEnum;
+import rebus.permissionutils.PermissionManager;
+import rebus.permissionutils.SimpleCallback;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .callback(new MediaRouter.SimpleCallback() {
+                .callback(new SimpleCallback() {
                     @Override
                     public void result(boolean allPermissionsGranted) {
                         if(allPermissionsGranted){

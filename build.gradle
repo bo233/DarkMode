@@ -8,7 +8,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
-        
+//        compile 'rebus:permission-utils:2.0.7'
+//        classpath 'rebus:permission-utils:2.0.7'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -19,6 +20,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+//        maven {
+//            url 'http://dl.bintray.com/raphaelbussa/maven'
+//        }
     }
 }
 
