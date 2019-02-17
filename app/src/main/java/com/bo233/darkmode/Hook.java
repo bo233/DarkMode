@@ -4,6 +4,7 @@ package com.bo233.darkmode;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.widget.CompoundButton;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,17 +19,18 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 
-public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResources {
+//, IXposedHookInitPackageResources
+public class Hook implements IXposedHookLoadPackage {
     private Properties properties;
     private final int textColor = 0xff808080;
     private final int backgndColor = 0xff101010;
 
-    @Override
-    public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam resparam) throws Throwable {
-        if (resparam.packageName.equals("com.android.systemui"))
-            return;
-
-    }
+//    @Override
+//    public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam resparam) throws Throwable {
+//        if (resparam.packageName.equals("com.android.systemui"))
+//            return;
+//
+//    }
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
@@ -47,6 +49,9 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                     "isModuleActive", XC_MethodReplacement.returnConstant(true));
         }
 
+//        if(packageName.equals("com.coolapk.market"))
+//            hookCoolapk(loader);
+
         if(!packageName.equals("com.android.systemui"))
             hookExec(loader, packageName);
 
@@ -56,19 +61,48 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
 
         try{
             hookText(classLoader);
-//            hookText2(classLoader);
             hookDrawColor(classLoader);
             hookViewBackground(classLoader);
-//            hookBackgroundDrawable(classLoader);
         } catch (Exception e){
                 e.printStackTrace();
         }
 
     }
 
+    private void hookCoolapk(ClassLoader classLoader){
+          XposedHelpers.findAndHookMethod("CenterV8SFragment$setupThemeSwitch$1", classLoader, //com.coolapk.market.view.center.CenterV8SFragment
+                "onCheckedChanged", CompoundButton.class, boolean.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+                            return;
+                        param.args[1] = true;
+                    }
+                });
+//        XposedHelpers.findAndHookMethod("com.coolapk.market.AppTheme", classLoader, //com.coolapk.market.view.center.CenterV8SFragment
+//                "isNightTheme", new XC_MethodHook() {
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+//                            return;
+//                        param.args[0] = true;
+//                    }
+//                });
+
+//        XposedHelpers.findAndHookMethod("com.coolapk.market.uti1.NightModeHelper", classLoader, //com.coolapk.market.view.center.CenterV8SFragment
+//                "shouldChangeNightMode", new XC_MethodHook() {
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+//                            return;
+//                        param.args[0] = true;
+//                    }
+//                });
+    }
+
     private void hookText(ClassLoader classLoader){
 
-        //////////////Hook setTextColor(int)
+        //////////////Hook setTextColor(int)////////////////
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setTextColor", int.class, new XC_MethodHook() {
                     @Override
@@ -85,7 +119,7 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                     }
                 });
 
-        //////////////Hook setTextColor(ColorStateList)
+        //////////////Hook setTextColor(ColorStateList)//////////////////
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
@@ -104,7 +138,7 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                     }
                 });
 
-        //////////////Hook setHintTextColor(int)
+        //////////////Hook setHintTextColor(int)/////////////////
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setHintTextColor", int.class, new XC_MethodHook() {
                     @Override
@@ -121,7 +155,7 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                     }
                 });
 
-        //////////////Hook setHintTextColor(ColorStateList)
+        //////////////Hook setHintTextColor(ColorStateList)///////////////
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setHintTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
@@ -224,7 +258,10 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
 //            });
 //    }
 
+
     private void hookViewBackground(ClassLoader classLoader){
+
+        /////////////////hook setBackgroundColor(int)//////////////////
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "setBackgroundColor", int.class, new XC_MethodHook() {
                     @Override
@@ -241,6 +278,7 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                     }
                 });
 
+        ////////////////hook setBackgroundDrawable(Drawable)//////////////////
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "setBackgroundDrawable", Drawable.class, new XC_MethodHook() { //此方法在API级别16中已弃用
                     @Override
@@ -256,6 +294,41 @@ public class Hook implements IXposedHookLoadPackage, IXposedHookInitPackageResou
                         super.afterHookedMethod(param);
                     }
                 });
+
+        ////////////////hook setBackground(Drawable)///////////////////
+        XposedHelpers.findAndHookMethod("android.view.View", classLoader,
+                "setBackground", Drawable.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+                            return;
+
+                        param.args[0] = new ColorDrawable(backgndColor);
+                    }
+
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                    }
+                });
+
+        ////////////////hook setBackgroundResource (int resid)//////////////////
+//        XposedHelpers.findAndHookMethod("android.view.View", classLoader,
+//                "setBackgroundResource", int.class, new XC_MethodHook() {
+//                    @Override
+//                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+//                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+//                            return;
+//
+//                        param.args[0] = 0; //remove the background
+//                    }
+//
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                        super.afterHookedMethod(param);
+//                    }
+//                });
+
     }
 }
 
