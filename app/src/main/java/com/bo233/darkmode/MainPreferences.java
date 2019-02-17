@@ -1,5 +1,6 @@
 package com.bo233.darkmode;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -21,7 +22,7 @@ import java.util.Properties;
 
 public class MainPreferences extends PreferenceFragment {
     private CheckBoxPreference openPreference;
-    private CheckBoxPreference test;
+    private CheckBoxPreference setByAppPreference;
     private Properties properties;
     public final static File PROP_FILE=new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
 //    public final static File PROP_FILE = new File(getExternalFilesDir()+"settings.ini");
@@ -31,7 +32,7 @@ public class MainPreferences extends PreferenceFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         addPreferencesFromResource(R.xml.main_preferences);
         openPreference = (CheckBoxPreference) findPreference("key_switch");
-        test = (CheckBoxPreference) findPreference("test");
+        setByAppPreference = (CheckBoxPreference) findPreference("setting_by_apps");
         properties=new Properties();
 
         try {
@@ -67,21 +68,17 @@ public class MainPreferences extends PreferenceFragment {
             }
         });
 
-        test.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        setByAppPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if(isOpen())
-                    Toast.makeText(getActivity(), "open:true", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(getActivity(), "open:false", Toast.LENGTH_SHORT).show();
-                return true;
+                Intent intent = new Intent(getActivity(), SettingByAppsActivity.class);
+                startActivity(intent);
+                return false;
             }
         });
+
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private Boolean isOpen(){
-        return false;
-    }
 }

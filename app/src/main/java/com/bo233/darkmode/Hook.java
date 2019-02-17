@@ -119,7 +119,10 @@ public class Hook implements IXposedHookLoadPackage {
                     }
                 });
 
-        //////////////Hook setTextColor(ColorStateList)//////////////////
+
+        /**
+         * Hook setTextColor(ColorStateList)
+         */
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
@@ -138,7 +141,9 @@ public class Hook implements IXposedHookLoadPackage {
                     }
                 });
 
-        //////////////Hook setHintTextColor(int)/////////////////
+        /**
+         * Hook setHintTextColor(int)
+         */
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setHintTextColor", int.class, new XC_MethodHook() {
                     @Override
@@ -155,7 +160,9 @@ public class Hook implements IXposedHookLoadPackage {
                     }
                 });
 
-        //////////////Hook setHintTextColor(ColorStateList)///////////////
+        /**
+         * Hook setHintTextColor(ColorStateList)
+         */
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setHintTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
@@ -261,7 +268,9 @@ public class Hook implements IXposedHookLoadPackage {
 
     private void hookViewBackground(ClassLoader classLoader){
 
-        /////////////////hook setBackgroundColor(int)//////////////////
+        /**
+         * hook setBackgroundColor(int)
+         */
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "setBackgroundColor", int.class, new XC_MethodHook() {
                     @Override
@@ -278,7 +287,9 @@ public class Hook implements IXposedHookLoadPackage {
                     }
                 });
 
-        ////////////////hook setBackgroundDrawable(Drawable)//////////////////
+        /**
+         * hook setBackgroundDrawable(Drawable)
+         */
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "setBackgroundDrawable", Drawable.class, new XC_MethodHook() { //此方法在API级别16中已弃用
                     @Override
@@ -295,7 +306,9 @@ public class Hook implements IXposedHookLoadPackage {
                     }
                 });
 
-        ////////////////hook setBackground(Drawable)///////////////////
+        /**
+         * hook setBackground(Drawable)
+         */
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "setBackground", Drawable.class, new XC_MethodHook() {
                     @Override
