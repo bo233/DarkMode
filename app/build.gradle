@@ -33,4 +33,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     compileOnly 'de.robv.android.xposed:api:53'
+    implementation 'com.github.addappcn:android-pickers:1.0.3'
 }

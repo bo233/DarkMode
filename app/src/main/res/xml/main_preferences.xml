@@ -12,7 +12,7 @@
             android:title="总开关" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="check_box_preference_1"
+            android:key="time_switch"
             android:summary="勾选后设定时间段"
             android:title="定时开关" />
     </PreferenceCategory>
