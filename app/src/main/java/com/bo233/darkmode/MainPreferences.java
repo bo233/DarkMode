@@ -1,5 +1,8 @@
 package com.bo233.darkmode;
 
+import android.app.AlertDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.preference.CheckBoxPreference;
@@ -12,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.TimePicker;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +25,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
 
-import cn.addapp.pickers.picker.TimePicker;
+//import cn.addapp.pickers.picker.TimePicker;
 
 public class MainPreferences extends PreferenceFragment {
     private CheckBoxPreference openPreference;
@@ -92,28 +97,86 @@ public class MainPreferences extends PreferenceFragment {
                     e.printStackTrace();
                 }
 
-                if(timeSwitch){
-                    TimePicker picker = new TimePicker(getActivity(), TimePicker.HOUR_24);
-                    picker.setRangeStart(0, 0);
-                    picker.setRangeEnd(23, 59);
-                    picker.setTopLineVisible(false);
-                    picker.setLineVisible(false);
-                    picker.setWheelModeEnable(false);
-                    picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
-                        @Override
-                        public void onTimePicked(String hour, String minute) {
+                if(timeSwitch)
+                    askAutoSwitchTime();
+                    //                    TimePicker picker = new TimePicker(getActivity(), TimePicker.HOUR_24);
+//                    picker.setRangeStart(0, 0);
+//                    picker.setRangeEnd(23, 59);
+//                    picker.setTopLineVisible(false);
+//                    picker.setLineVisible(false);
+//                    picker.setWheelModeEnable(false);
+//                    picker.setOnTimePickListener(new TimePicker.OnTimePickListener() {
+//                        @Override
+//                        public void onTimePicked(String hour, String minute) {
+//
+//                        }
+//                    });
+//                    picker.show();
 
-                        }
-                    });
-                    picker.show();
-
-                }
                 return true;
             }
         });
 
 
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    /**
+     * 设定自动开关的时间
+     */
+    private void askAutoSwitchTime(){
+
+        final TimePickerDialog endingTimeDialog = new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+                properties.setProperty("ending_time",hourOfDay+":"+minute);
+                try {
+                    properties.store(new FileOutputStream(PROP_FILE),comment);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 0, true);
+
+        final TimePickerDialog beginningTimeDialog = new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                properties.setProperty("beginning_time",hourOfDay+":"+minute);
+                try {
+                    properties.store(new FileOutputStream(PROP_FILE),comment);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                endingTimeDialog.show();
+            }
+        }, 0, 0, true);
+        beginningTimeDialog.setCancelable(false);
+        beginningTimeDialog.setCanceledOnTouchOutside(false);
+        beginningTimeDialog.setTitle("开始时间");
+        beginningTimeDialog.show();
+
+
+        endingTimeDialog.setCancelable(false);
+        endingTimeDialog.setCanceledOnTouchOutside(false);
+        endingTimeDialog.setTitle("结束时间");
+
+        beginningTimeDialog.setOnCancelListener(new TimePickerDialog.OnCancelListener(){
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                beginningTimeDialog.show();
+                Toast.makeText(getActivity(),"请勿取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        endingTimeDialog.setOnCancelListener(new TimePickerDialog.OnCancelListener(){
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                endingTimeDialog.show();
+                Toast.makeText(getActivity(),"请勿取消", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 }

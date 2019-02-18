@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import rebus.permissionutils.AskAgainCallback;
@@ -35,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "模块未激活", Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(this, "模块已激活", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "模块已激活", Toast.LENGTH_LONG).show();
+            TextView textView = (TextView) findViewById(R.id.not_active_hint);
+            textView.setVisibility(View.GONE);
 
             request();
         }
