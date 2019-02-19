@@ -7,13 +7,17 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class MyProperties {
-    public final static File PROP_FILE=new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
+    private String filePath;
+    private File PROP_FILE;
+//    private final static File PROP_FILE = new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
     //    public final static File PROP_FILE = new File(getExternalFilesDir()+"settings.ini");
 //    Log.d("MainPreferences", "地址："+Environment.getExternalStorageDirectory().getAbsolutePath());
     private final String comment = "This is a settings.";
     private Properties properties;
 
-    public MyProperties(){
+    public MyProperties(String path){
+        PROP_FILE = new File(path);
+        filePath = path;
         properties = new Properties();
         try {
             properties.load(new FileReader(PROP_FILE));
@@ -23,6 +27,8 @@ public class MyProperties {
         if(!PROP_FILE.exists()) {
             PROP_FILE.getParentFile().mkdir();
             this.setProperty("open", "false");
+            this.setProperty("time_switch", "false");
+
         }
     }
 
@@ -37,5 +43,9 @@ public class MyProperties {
         }
 
         return isSuccessful;
+    }
+
+    public String getProperty(String key){
+        return properties.getProperty(key);
     }
 }

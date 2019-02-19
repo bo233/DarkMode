@@ -6,9 +6,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.CompoundButton;
 
+import com.bo233.darkmode.util.MyProperties;
+
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Properties;
+//import java.util.Properties;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -21,9 +23,10 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 //, IXposedHookInitPackageResources
 public class Hook implements IXposedHookLoadPackage {
-    private Properties properties;
+    private MyProperties properties;
     private final int textColor = 0xff808080;
     private final int backgndColor = 0xff101010;
+    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 
 //    @Override
 //    public void handleInitPackageResources(XC_InitPackageResources.InitPackageResourcesParam resparam) throws Throwable {
@@ -37,12 +40,12 @@ public class Hook implements IXposedHookLoadPackage {
         ClassLoader loader = loadPackageParam.classLoader;
         String packageName = loadPackageParam.packageName;
 
-        properties = new Properties();
-        try {
-            properties.load(new FileReader(MainPreferences.PROP_FILE));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        properties = new MyProperties(SETTINGPATH);
+//        try {
+//            properties.load(new FileReader(MainPreferences.PROP_FILE));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         if(packageName.equals("com.bo233.darkmode")) {
             XposedHelpers.findAndHookMethod("com.bo233.darkmode.MainActivity", loadPackageParam.classLoader,
@@ -102,7 +105,9 @@ public class Hook implements IXposedHookLoadPackage {
 
     private void hookText(ClassLoader classLoader){
 
-        //////////////Hook setTextColor(int)////////////////
+        /**
+         * Hook setTextColor(int)
+         */
         XposedHelpers.findAndHookMethod("android.widget.TextView", classLoader,
                 "setTextColor", int.class, new XC_MethodHook() {
                     @Override
