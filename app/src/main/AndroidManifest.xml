@@ -26,10 +26,13 @@
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="Hook测试" />
+            android:value="全局夜间模式" />
         <meta-data
             android:name="xposedminversion"
             android:value="53" />
+        <receiver
+            android:name=".util.MyBroadcastReceiver"
+            android:process=":remote" />
 
     </application>
 

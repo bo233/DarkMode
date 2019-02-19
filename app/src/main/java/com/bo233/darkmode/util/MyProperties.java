@@ -28,6 +28,10 @@ public class MyProperties {
             PROP_FILE.getParentFile().mkdir();
             this.setProperty("open", "false");
             this.setProperty("time_switch", "false");
+            this.setProperty("beginning_hour", " ");
+            this.setProperty("beginning_min", " ");
+            this.setProperty("ending_hour", " ");
+            this.setProperty("ending_min", " ");
 
         }
     }

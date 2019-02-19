@@ -20,6 +20,7 @@ import android.widget.Toast;
 import android.widget.TimePicker;
 
 import com.bo233.darkmode.util.MyProperties;
+import com.bo233.darkmode.util.MyTimer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,6 +34,8 @@ public class MainPreferences extends PreferenceFragment {
     private CheckBoxPreference setByAppPreference;
     private CheckBoxPreference timePreference;
     private MyProperties properties;
+    private MyTimer timer;
+
     private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 //    public final static File PROP_FILE=new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
 //    public final static File PROP_FILE = new File(getExternalFilesDir()+"settings.ini");
@@ -45,6 +48,7 @@ public class MainPreferences extends PreferenceFragment {
         setByAppPreference = (CheckBoxPreference) findPreference("setting_by_apps");
         timePreference = (CheckBoxPreference) findPreference("time_switch");
         properties = new MyProperties(SETTINGPATH);
+        timer = new MyTimer(getActivity());
 
 //        try {
 //            properties.load(new FileReader(PROP_FILE));
@@ -99,8 +103,9 @@ public class MainPreferences extends PreferenceFragment {
 //                    e.printStackTrace();
 //                }
 
-                if(timeSwitch)
+                if(timeSwitch) {
                     askAutoSwitchTime();
+                    timer.start();
                     //                    TimePicker picker = new TimePicker(getActivity(), TimePicker.HOUR_24);
 //                    picker.setRangeStart(0, 0);
 //                    picker.setRangeEnd(23, 59);
@@ -114,6 +119,10 @@ public class MainPreferences extends PreferenceFragment {
 //                        }
 //                    });
 //                    picker.show();
+                }
+                else{
+                    timer.cancel();
+                }
 
                 return true;
             }
@@ -132,7 +141,8 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                properties.setProperty("ending_time",hourOfDay+":"+minute);
+                properties.setProperty("ending_hour",hourOfDay+"");
+                properties.setProperty("ending_min",minute+"");
 //                try {
 //                    properties.store(new FileOutputStream(PROP_FILE),comment);
 //                } catch (IOException e) {
@@ -144,7 +154,8 @@ public class MainPreferences extends PreferenceFragment {
         final TimePickerDialog beginningTimeDialog = new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                properties.setProperty("beginning_time",hourOfDay+":"+minute);
+                properties.setProperty("beginning_hour",hourOfDay+"");
+                properties.setProperty("beginning_min",minute+"");
 //                try {
 //                    properties.store(new FileOutputStream(PROP_FILE),comment);
 //                } catch (IOException e) {
