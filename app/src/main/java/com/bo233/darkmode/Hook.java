@@ -1,9 +1,13 @@
 package com.bo233.darkmode;
 
 
+import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.CompoundButton;
 
 import com.bo233.darkmode.util.MyProperties;
@@ -58,6 +62,8 @@ public class Hook implements IXposedHookLoadPackage {
             hookText(classLoader);
             hookDrawColor(classLoader);
             hookViewBackground(classLoader);
+            hookView(classLoader);
+//            hookCardView(classLoader);
         } catch (Exception e){
                 e.printStackTrace();
         }
@@ -266,6 +272,73 @@ public class Hook implements IXposedHookLoadPackage {
 //                    }
 //                });
 
+    }
+
+    private void hookView(ClassLoader classLoader){
+        XposedHelpers.findAndHookMethod("android.view.View", classLoader,
+                "onDraw", Canvas.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
+                        Log.d("hookCons", "hooked");
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("android.view.View", classLoader,
+                "onDraw", Canvas.class, AttributeSet.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
+                        Log.d("hookCons", "hooked");
+                    }
+                });
+
+        XposedHelpers.findAndHookMethod("android.view.View", classLoader,
+                "onDraw", Canvas.class, AttributeSet.class, int.class, new XC_MethodHook() {
+                    @Override
+                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                        super.afterHookedMethod(param);
+                        XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
+                        Log.d("hookCons", "hooked");
+                    }
+                });
+    }
+
+
+    private void hookCardView(ClassLoader classLoader){
+        try {
+            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
+                    "setCardBackgroundColor", int.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            super.beforeHookedMethod(param);
+                            if (properties.getProperty("open") == null || properties.getProperty("open").equals("false"))
+                                return;
+
+                            Log.d("hookCardView", "int");
+                            param.args[0] = backgndColor;
+                        }
+                    });
+
+            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
+                    "setCardBackgroundColor", ColorStateList.class, new XC_MethodHook() {
+                        @Override
+                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                            super.beforeHookedMethod(param);
+                            if (properties.getProperty("open") == null || properties.getProperty("open").equals("false"))
+                                return;
+
+                            ColorStateList c = ColorStateList.valueOf(backgndColor);
+
+                            param.args[0] = c;
+                            Log.d("hookCardView", "ColorStateList");
+                        }
+                    });
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
 
