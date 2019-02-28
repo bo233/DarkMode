@@ -27,6 +27,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static com.bo233.darkmode.util.SuUtil.kill;
+
 //import cn.addapp.pickers.picker.TimePicker;
 
 public class MainPreferences extends PreferenceFragment {
@@ -54,6 +56,7 @@ public class MainPreferences extends PreferenceFragment {
                 boolean open=(boolean)o;
                 Toast.makeText(getActivity(), "重新启动所有应用以生效", Toast.LENGTH_SHORT).show();
                 properties.setProperty("open",open+"");
+                kill("com.taobao.taobao");
                 return true;
             }
         });

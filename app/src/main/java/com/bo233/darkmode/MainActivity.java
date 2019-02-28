@@ -17,6 +17,8 @@ import rebus.permissionutils.PermissionEnum;
 import rebus.permissionutils.PermissionManager;
 import rebus.permissionutils.SimpleCallback;
 
+import static com.bo233.darkmode.support.RequireRootPermission.upgradeRootPermission;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
                             FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.frag_container,new MainPreferences());
                             fragmentTransaction.commit();
+                            if(!upgradeRootPermission(getPackageCodePath()))
+                                Toast.makeText(MainActivity.this, "未允许root权限，部分功能可能失效", Toast.LENGTH_LONG).show();
                         }
                     }
                 })
