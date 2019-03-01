@@ -4,30 +4,20 @@ import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Environment;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.TimePicker;
 
 import com.bo233.darkmode.util.MyProperties;
 import com.bo233.darkmode.util.MyTimer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-
-import static com.bo233.darkmode.util.SuUtil.kill;
+import static com.bo233.darkmode.util.AppKiller.*;
 
 //import cn.addapp.pickers.picker.TimePicker;
 
@@ -56,7 +46,8 @@ public class MainPreferences extends PreferenceFragment {
                 boolean open=(boolean)o;
                 Toast.makeText(getActivity(), "重新启动所有应用以生效", Toast.LENGTH_SHORT).show();
                 properties.setProperty("open",open+"");
-                kill("com.taobao.taobao");
+//                killRunningApps();
+                kill("com.android.settings");
                 return true;
             }
         });

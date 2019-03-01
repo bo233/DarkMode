@@ -18,6 +18,7 @@ import rebus.permissionutils.PermissionManager;
 import rebus.permissionutils.SimpleCallback;
 
 import static com.bo233.darkmode.support.RequireRootPermission.upgradeRootPermission;
+import static com.bo233.darkmode.util.AppHelper.setPackageManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,19 +27,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        Button test = (Button)findViewById(R.id.button);
-//        test.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "模块未激活", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         if (!isModuleActive()){
             Toast.makeText(this, "模块未激活", Toast.LENGTH_LONG).show();
         }
         else {
-//            Toast.makeText(this, "模块已激活", Toast.LENGTH_LONG).show();
             TextView textView = (TextView) findViewById(R.id.not_active_hint);
             textView.setVisibility(View.GONE);
 
@@ -67,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                             fragmentTransaction.commit();
                             if(!upgradeRootPermission(getPackageCodePath()))
                                 Toast.makeText(MainActivity.this, "未允许root权限，部分功能可能失效", Toast.LENGTH_LONG).show();
+                            setPackageManager(MainActivity.this);
                         }
                     }
                 })

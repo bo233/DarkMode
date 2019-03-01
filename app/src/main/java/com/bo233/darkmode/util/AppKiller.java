@@ -3,11 +3,14 @@ package com.bo233.darkmode.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
+
+import static com.bo233.darkmode.util.AppHelper.getAllPkgNames;
 
 /**
  * 执行root功能
  */
-public class SuUtil {
+public class AppKiller {
 
     private static Process process;
 
@@ -20,14 +23,18 @@ public class SuUtil {
         close();
     }
 
-    public static void killApps(String[] packageNames){
+    public static void killApps(List<String> packageNames){
         initProcess();
         killProcesses(packageNames);
         close();
     }
 
-    public static void killRunningApps(){
-        
+    public static void killAllApps(){
+        killApps(getAllPkgNames());
+    }
+
+    public static void killSelectedApps(){
+
     }
 
     /**
@@ -56,11 +63,11 @@ public class SuUtil {
         }
     }
 
-    private static void killProcesses(String[] packageNames){
+    private static void killProcesses(List<String> packageNames){
         OutputStream out = process.getOutputStream();
         String cmd;
-        for(int i = 0; i < packageNames.length; i++) {
-            cmd = "am force-stop " + packageNames[i] + " \n";
+        for(String pkgName : packageNames) {
+            cmd = "am force-stop " + pkgName + " \n";
             try {
                 out.write(cmd.getBytes());
                 out.flush();

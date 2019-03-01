@@ -1,29 +1,20 @@
 package com.bo233.darkmode;
 
 
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.CompoundButton;
 
 import com.bo233.darkmode.util.MyProperties;
 
-import java.io.FileReader;
-import java.io.IOException;
-
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
-
-import static com.bo233.darkmode.util.SuUtil.kill;
 
 
 //, IXposedHookInitPackageResources
