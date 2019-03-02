@@ -18,15 +18,16 @@ import java.util.List;
 
 import static com.bo233.darkmode.util.AppHelper.getAppList;
 
-public class AppListFragment extends ListFragment {
-    private ArrayList<AppInfo> userAppList = new ArrayList<>();
-    private ArrayList<AppInfo> systemAppList = new ArrayList<>();
+public class UserAppListFragment extends ListFragment {
+    private ArrayList<AppInfo> appList = new ArrayList<>();
+//    private ArrayList<AppInfo> systemAppList = new ArrayList<>();
+    private int typeOfApps = AppHelper.USER_APP_LIST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getAppList(userAppList, systemAppList);
-        AppAdapter adapter = new AppAdapter(this.getActivity(), userAppList);
+        getAppList(appList, typeOfApps);
+        AppAdapter adapter = new AppAdapter(this.getActivity(), appList);
         setListAdapter(adapter);
     }
 

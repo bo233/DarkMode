@@ -17,6 +17,9 @@ public class AppHelper {
     private static PackageManager packageManager;
     private static List<PackageInfo> packages = new ArrayList<>();
 
+    public static final int USER_APP_LIST = 0;
+    public static final int SYSTEM_APP_LIST = 1;
+
     public static void setPackageManager(Activity a){
         packageManager = a.getPackageManager();
         packages = packageManager.getInstalledPackages(0);
@@ -42,7 +45,7 @@ public class AppHelper {
     /**
      * 获取应用信息列表
      */
-    public static void getAppList(ArrayList<AppInfo> userAppList, ArrayList<AppInfo> systemAppList) {
+    public static void getAppList(ArrayList<AppInfo> appList, int typeOfApps) {
 //        PackageManager pm = this.getActivity().getPackageManager();
         // Return a List of all packages that are installed on the device.
 //        List<PackageInfo> packages = pm.getInstalledPackages(0);
@@ -51,24 +54,28 @@ public class AppHelper {
 //             判断系统/非系统应用
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)	// 非系统应用
             {
-            AppInfo info = new AppInfo();
-            info.appName = packageInfo.applicationInfo.loadLabel(packageManager)
-                    .toString();
-            info.pkgName = packageInfo.packageName;
-            info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
-            // 获取该应用安装包的Intent，用于启动该应用
-            info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
-            userAppList.add(info);
+                if(typeOfApps == USER_APP_LIST) {
+                    AppInfo info = new AppInfo();
+                    info.appName = packageInfo.applicationInfo.loadLabel(packageManager)
+                            .toString();
+                    info.pkgName = packageInfo.packageName;
+                    info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
+                    // 获取该应用安装包的Intent，用于启动该应用
+                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+                    appList.add(info);
+                }
             } else {
+                if(typeOfApps == SYSTEM_APP_LIST) {
 //             系统应用　　　　　　　　
-                AppInfo info = new AppInfo();
-                info.appName = packageInfo.applicationInfo.loadLabel(packageManager)
-                        .toString();
-                info.pkgName = packageInfo.packageName;
-                info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
-                // 获取该应用安装包的Intent，用于启动该应用
-                info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
-                systemAppList.add(info);
+                    AppInfo info = new AppInfo();
+                    info.appName = packageInfo.applicationInfo.loadLabel(packageManager)
+                            .toString();
+                    info.pkgName = packageInfo.packageName;
+                    info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
+                    // 获取该应用安装包的Intent，用于启动该应用
+                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+                    appList.add(info);
+                }
             }
 
         }
