@@ -7,13 +7,21 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class MyProperties {
+    public static final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
     private String filePath;
     private File PROP_FILE;
 //    private final static File PROP_FILE = new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
     //    public final static File PROP_FILE = new File(getExternalFilesDir()+"settings.ini");
 //    Log.d("MainPreferences", "地址："+Environment.getExternalStorageDirectory().getAbsolutePath());
     private final String comment = "This is a settings.";
-    private Properties properties;
+    private static Properties properties;
+
+    public static final String KEY_SWITCH = "open";
+    public static final String TIME_SWITCH = "time_switch";
+    public static final String BEGIN_HOUR = "beginning_hour";
+    public static final String BEGIN_MIN = "beginning_min";
+    public static final String END_HOUR = "ending_hour";
+    public static final String END_MIN = "ending_min";
 
     public MyProperties(String path){
         PROP_FILE = new File(path);
@@ -26,27 +34,27 @@ public class MyProperties {
         }
         if(!PROP_FILE.exists()) {
             PROP_FILE.getParentFile().mkdir();
-            this.setProperty("open", "false");
-            this.setProperty("time_switch", "false");
-            this.setProperty("beginning_hour", " ");
-            this.setProperty("beginning_min", " ");
-            this.setProperty("ending_hour", " ");
-            this.setProperty("ending_min", " ");
+            this.setProperty(KEY_SWITCH, "false");
+            this.setProperty(TIME_SWITCH, "false");
+            this.setProperty(BEGIN_HOUR, " ");
+            this.setProperty(BEGIN_MIN, " ");
+            this.setProperty(END_HOUR, " ");
+            this.setProperty(END_MIN, " ");
 
         }
     }
 
     public boolean setProperty(String key, String value){
-        boolean isSuccessful = true;
+//        boolean isSuccessful = true;
         properties.setProperty(key, value);
         try {
             properties.store(new FileOutputStream(PROP_FILE),comment);
         } catch (IOException e) {
             e.printStackTrace();
-            isSuccessful = false;
+            return false;
         }
 
-        return isSuccessful;
+        return true;
     }
 
     public String getProperty(String key){

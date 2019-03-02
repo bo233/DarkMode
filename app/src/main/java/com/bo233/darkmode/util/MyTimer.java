@@ -4,31 +4,31 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.icu.util.TimeZone;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import static android.content.Context.ALARM_SERVICE;
 
 public class MyTimer {
-    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
     private MyProperties properties;
     private AlarmManager beginAlarmManager, endAlarmManager;
     private Context context;
-    private int beginHour, beginMin, endHour, endMin;
-    private Calendar beginTime, endTime;
+    private static int mBeginHour, mBeginMin, mEndHour, mEndMin;
+    private static Calendar beginTime, endTime;
     private Intent beginIntent, endIntent;
     private PendingIntent beginPendingIntent, endPendingIntent;
 
-    private final String BEGIN_HOUR = "beginning_hour";
-    private final String BEGIN_MIN = "beginning_min";
-    private final String END_HOUR = "ending_hour";
-    private final String END_MIN = "ending_min";
+    public static final String BEGIN_HOUR = "beginning_hour";
+    public static final String BEGIN_MIN = "beginning_min";
+    public static final String END_HOUR = "ending_hour";
+    public static final String END_MIN = "ending_min";
 
     public MyTimer(Context c){
         context = c;
-        properties = new MyProperties(SETTINGPATH);
+        properties = new MyProperties(MyProperties.SETTINGPATH);
         beginAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
 //        beginAlarmManager.setTimeZone("GMT+08:00");
         endAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
@@ -47,25 +47,21 @@ public class MyTimer {
      * 设置并启用闹钟
      * @return 是否成功
      */
-    public boolean start(){
-        if(updateTime())
-            return false;
+    public void start(){
+//        if(updateTime())
+//            return false;
+        updateTime();
 
-        beginTime.set(Calendar.HOUR_OF_DAY, beginHour);
-        beginTime.set(Calendar.MINUTE, beginMin);
-        beginTime.set(Calendar.SECOND, 0);
-        endTime.set(Calendar.HOUR_OF_DAY, endHour);
-        endTime.set(Calendar.MINUTE, endMin);
-        endTime.set(Calendar.SECOND, 0);
+
 
         beginAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, beginTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, beginPendingIntent);
         endAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, endTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, endPendingIntent);
 
-        Log.d("MyBoroadcaster", "sent");
+        Log.d("MyBroadcaster", "sent");
 
-        return true;
+//        return true;
     }
 
     /**
@@ -76,27 +72,31 @@ public class MyTimer {
         endAlarmManager.cancel(endPendingIntent);
     }
 
-    public String getTime(){
-        String s = beginHour+":"+beginMin+" - "+endHour+":"+endMin;
+    public String getStringTime(){ // need modify
+        updateTime();
+        String s = new SimpleDateFormat("HH:mm", Locale.CHINA).format(beginTime.getTime()) + " - "+ new SimpleDateFormat("HH:mm", Locale.CHINA).format(endTime.getTime());
         return s;
     }
 
     /**
      * 从ini文件中读取设定的时间
-     * @return
      */
-    private boolean updateTime(){
-        boolean isSuccessful = true;
+    private void updateTime(){
         try{
-            beginHour = Integer.parseInt(properties.getProperty(BEGIN_HOUR));
-            beginMin = Integer.parseInt(properties.getProperty(BEGIN_MIN));
-            endHour = Integer.parseInt(properties.getProperty(END_HOUR));
-            endMin = Integer.parseInt(properties.getProperty(END_MIN));
+            mBeginHour = Integer.parseInt(properties.getProperty(BEGIN_HOUR).trim());
+            mBeginMin = Integer.parseInt(properties.getProperty(BEGIN_MIN).trim());
+            mEndHour = Integer.parseInt(properties.getProperty(END_HOUR).trim());
+            mEndMin = Integer.parseInt(properties.getProperty(END_MIN).trim());
         }catch (Exception e){
             e.printStackTrace();
-            isSuccessful = false;
         }
 
-        return isSuccessful;
+        beginTime.set(Calendar.HOUR_OF_DAY, mBeginHour);
+        beginTime.set(Calendar.MINUTE, mBeginMin);
+        beginTime.set(Calendar.SECOND, 0);
+        endTime.set(Calendar.HOUR_OF_DAY, mEndHour);
+        endTime.set(Calendar.MINUTE, mEndMin);
+        endTime.set(Calendar.SECOND, 0);
+
     }
 }
