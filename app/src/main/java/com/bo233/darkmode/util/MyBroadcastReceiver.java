@@ -11,17 +11,17 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     private MyProperties properties ;
     public MyBroadcastReceiver(){ //???????????????????????????
         super();
-        properties = new MyProperties(MyProperties.SETTINGPATH);
+//        properties = new MyProperties(MyProperties.SETTINGPATH);
     }
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("beginAlarm".equals(intent.getAction())) {
-            properties.setProperty("open", "true");
+//            properties.setProperty(MyProperties.KEY_SWITCH, "true");
             AppKiller.killSelectedApps();
             Log.d("myReceive", "open:true");
         }
         else if ("endAlarm".equals(intent.getAction())) {
-            properties.setProperty("open", "false");
+//            properties.setProperty(MyProperties.KEY_SWITCH, "false");
             AppKiller.killSelectedApps();
             Log.d("myReceive", "open:false");
         }

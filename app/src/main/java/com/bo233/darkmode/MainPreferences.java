@@ -37,17 +37,14 @@ public class MainPreferences extends PreferenceFragment {
         timePreference = (CheckBoxPreference) findPreference("time_switch");
         properties = new MyProperties(MyProperties.SETTINGPATH);
         timer = new MyTimer(getActivity());
-        if(properties.getProperty(MyProperties.TIME_SWITCH).equals("true"))
-            timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
-        else
-            timePreference.setSummary("勾选后设定时间段");
+        timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
 
         openPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean open=(boolean)o;
                 Toast.makeText(getActivity(), "重新启动所有应用以生效", Toast.LENGTH_SHORT).show();
-                properties.setProperty("open",open+"");
+                properties.setProperty(MyProperties.KEY_SWITCH,open+"");
 //                killRunningApps();
                 kill("com.android.settings");
                 return true;
@@ -67,7 +64,7 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean timeSwitch = (boolean)newValue;
-                properties.setProperty("time_switch",timeSwitch+"");
+                properties.setProperty(MyProperties.TIME_SWITCH,timeSwitch+"");
 
 
                 if(timeSwitch) {
@@ -77,7 +74,7 @@ public class MainPreferences extends PreferenceFragment {
 
                 }
                 else{
-                    timePreference.setSummary("勾选后设定时间段");
+//                    timePreference.setSummary("勾选后设定时间段");
                     timer.cancel();
                 }
 
@@ -103,7 +100,7 @@ public class MainPreferences extends PreferenceFragment {
                 timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
 
             }
-        }, 0, 0, true);
+        }, Integer.parseInt(properties.getProperty(MyProperties.END_HOUR)), Integer.parseInt(properties.getProperty(MyProperties.END_MIN)), true);
 
         final TimePickerDialog beginningTimeDialog = new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
@@ -112,7 +109,7 @@ public class MainPreferences extends PreferenceFragment {
                 properties.setProperty(MyTimer.BEGIN_MIN,minute+"");
                 endingTimeDialog.show();
             }
-        }, 0, 0, true);
+        }, Integer.parseInt(properties.getProperty(MyProperties.BEGIN_HOUR)), Integer.parseInt(properties.getProperty(MyProperties.BEGIN_MIN)), true);
 
         beginningTimeDialog.setCancelable(false);
         beginningTimeDialog.setCanceledOnTouchOutside(false);

@@ -36,10 +36,10 @@ public class MyProperties {
             PROP_FILE.getParentFile().mkdir();
             this.setProperty(KEY_SWITCH, "false");
             this.setProperty(TIME_SWITCH, "false");
-            this.setProperty(BEGIN_HOUR, " ");
-            this.setProperty(BEGIN_MIN, " ");
-            this.setProperty(END_HOUR, " ");
-            this.setProperty(END_MIN, " ");
+            this.setProperty(BEGIN_HOUR, "0");
+            this.setProperty(BEGIN_MIN, "0");
+            this.setProperty(END_HOUR, "0");
+            this.setProperty(END_MIN, "0");
 
         }
     }

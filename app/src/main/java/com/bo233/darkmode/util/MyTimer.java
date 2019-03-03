@@ -45,7 +45,6 @@ public class MyTimer {
 
     /**
      * 设置并启用闹钟
-     * @return 是否成功
      */
     public void start(){
 //        if(updateTime())
@@ -70,6 +69,7 @@ public class MyTimer {
     public void cancel(){
         beginAlarmManager.cancel(beginPendingIntent);
         endAlarmManager.cancel(endPendingIntent);
+        Log.d("MyBroadcaster", "cancel");
     }
 
     public String getStringTime(){ // need modify
