@@ -42,30 +42,7 @@ public class UserAppListFragment extends ListFragment {
         // 启动所选应用
 //        startActivity(appList.get(position).appIntent);
     }
-//        PackageManager pm = this.getActivity().getPackageManager();
-//        // Return a List of all packages th
 
-    /**
-     * 获取应用信息列表
-     */
-//    private void getAppList() {at are installed on the device.
-//        List<PackageInfo> packages = pm.getInstalledPackages(0);
-//        for (PackageInfo packageInfo : packages) {
-//            // 判断系统/非系统应用
-////            if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0)	// 非系统应用
-////            {
-//                AppInfo info = new AppInfo();
-//                info.appName = packageInfo.applicationInfo.loadLabel(pm)
-//                        .toString();
-//                info.pkgName = packageInfo.packageName;
-//                info.appIcon = packageInfo.applicationInfo.loadIcon(pm);
-//                // 获取该应用安装包的Intent，用于启动该应用
-//                info.appIntent = pm.getLaunchIntentForPackage(packageInfo.packageName);
-//                appList.add(info);
-////            } else {
-//                // 系统应用　　　　　　　　
-////            }
-//
-//        }
-//    }
+
+
 }

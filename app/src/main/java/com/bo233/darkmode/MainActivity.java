@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bo233.darkmode.util.AppHelper;
+import com.bo233.darkmode.util.MyProperties;
+
 import rebus.permissionutils.AskAgainCallback;
 import rebus.permissionutils.FullCallback;
 import rebus.permissionutils.PermissionEnum;
@@ -18,7 +21,6 @@ import rebus.permissionutils.PermissionManager;
 import rebus.permissionutils.SimpleCallback;
 
 import static com.bo233.darkmode.support.RequireRootPermission.upgradeRootPermission;
-import static com.bo233.darkmode.util.AppHelper.setPackageManager;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MyProperties.init();
         setContentView(R.layout.activity_main);
 
         if (!isModuleActive()){
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                             fragmentTransaction.commit();
                             if(!upgradeRootPermission(getPackageCodePath()))
                                 Toast.makeText(MainActivity.this, "未允许root权限，部分功能可能失效", Toast.LENGTH_LONG).show();
-                            setPackageManager(MainActivity.this);
+                            AppHelper.setPackageManager(MainActivity.this);
                         }
                     }
                 })
