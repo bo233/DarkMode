@@ -8,21 +8,20 @@ import android.widget.Toast;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 //    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
-//    private MyProperties properties ;
+    private MyProperties properties ;
     public MyBroadcastReceiver(){ //???????????????????????????
         super();
 //        properties = new MyProperties(MyProperties.SETTINGPATH);
-        MyProperties.init();
     }
     @Override
     public void onReceive(Context context, Intent intent) {
         if ("beginAlarm".equals(intent.getAction())) {
-            MyProperties.setProperty(MyProperties.KEY_SWITCH, "true");
+//            properties.setProperty(MyProperties.KEY_SWITCH, "true");
             AppKiller.killSelectedApps();
             Log.d("myReceive", "open:true");
         }
         else if ("endAlarm".equals(intent.getAction())) {
-            MyProperties.setProperty(MyProperties.KEY_SWITCH, "false");
+//            properties.setProperty(MyProperties.KEY_SWITCH, "false");
             AppKiller.killSelectedApps();
             Log.d("myReceive", "open:false");
         }

@@ -8,12 +8,12 @@ import java.util.Properties;
 
 public class MyProperties {
     public static final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
-//    private String filePath;
-    private static File PROP_FILE;
+    private String filePath;
+    private File PROP_FILE;
 //    private final static File PROP_FILE = new File("/sdcard/Android/data/com.bo233.darkmode/settings.ini");
     //    public final static File PROP_FILE = new File(getExternalFilesDir()+"settings.ini");
 //    Log.d("MainPreferences", "地址："+Environment.getExternalStorageDirectory().getAbsolutePath());
-    private static final String comment = "This is a settings.";
+    private final String comment = "This is a settings.";
     private static Properties properties;
 
     public static final String KEY_SWITCH = "open";
@@ -23,51 +23,28 @@ public class MyProperties {
     public static final String END_HOUR = "ending_hour";
     public static final String END_MIN = "ending_min";
 
-    public static void init(){
-        if(properties == null) {
-            properties = new Properties();
-            PROP_FILE = new File(SETTINGPATH);
-            try {
-                properties.load(new FileReader(PROP_FILE));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (!PROP_FILE.exists()) {
-                PROP_FILE.getParentFile().mkdir();
-                setProperty(KEY_SWITCH, "false");
-                setProperty(TIME_SWITCH, "false");
-                setProperty(BEGIN_HOUR, "0");
-                setProperty(BEGIN_MIN, "0");
-                setProperty(END_HOUR, "0");
-                setProperty(END_MIN, "0");
-
-            }
+    public MyProperties(String path){
+        PROP_FILE = new File(path);
+        filePath = path;
+        properties = new Properties();
+        try {
+            properties.load(new FileReader(PROP_FILE));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        if(!PROP_FILE.exists()) {
+            PROP_FILE.getParentFile().mkdir();
+            this.setProperty(KEY_SWITCH, "false");
+            this.setProperty(TIME_SWITCH, "false");
+            this.setProperty(BEGIN_HOUR, "0");
+            this.setProperty(BEGIN_MIN, "0");
+            this.setProperty(END_HOUR, "0");
+            this.setProperty(END_MIN, "0");
 
+        }
     }
 
-//    public MyProperties(String path){
-//        PROP_FILE = new File(SETTINGPATH);
-////        filePath = path;
-//        properties = new Properties();
-//        try {
-//            properties.load(new FileReader(PROP_FILE));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if(!PROP_FILE.exists()) {
-//            PROP_FILE.getParentFile().mkdir();
-//            this.setProperty(KEY_SWITCH, "false");
-//            this.setProperty(TIME_SWITCH, "false");
-//            this.setProperty(BEGIN_HOUR, "0");
-//            this.setProperty(BEGIN_MIN, "0");
-//            this.setProperty(END_HOUR, "0");
-//            this.setProperty(END_MIN, "0");
-//
-//        }
-//    }
-
-    public static boolean setProperty(String key, String value){
+    public boolean setProperty(String key, String value){
 //        boolean isSuccessful = true;
         properties.setProperty(key, value);
         try {
@@ -80,7 +57,7 @@ public class MyProperties {
         return true;
     }
 
-    public static String getProperty(String key){
+    public String getProperty(String key){
         return properties.getProperty(key);
     }
 }

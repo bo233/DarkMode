@@ -25,7 +25,7 @@ public class MainPreferences extends PreferenceFragment {
     private CheckBoxPreference openPreference;
     private CheckBoxPreference setByAppPreference;
     private CheckBoxPreference timePreference;
-//    private MyProperties properties;
+    private MyProperties properties;
     private MyTimer timer;
 
 //    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
@@ -35,8 +35,7 @@ public class MainPreferences extends PreferenceFragment {
         openPreference = (CheckBoxPreference) findPreference("key_switch");
         setByAppPreference = (CheckBoxPreference) findPreference("setting_by_apps");
         timePreference = (CheckBoxPreference) findPreference("time_switch");
-//        properties = new MyProperties(MyProperties.SETTINGPATH);
-
+        properties = new MyProperties(MyProperties.SETTINGPATH);
         timer = new MyTimer(getActivity());
         timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
 
@@ -45,7 +44,7 @@ public class MainPreferences extends PreferenceFragment {
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean open=(boolean)o;
                 Toast.makeText(getActivity(), "重新启动所有应用以生效", Toast.LENGTH_SHORT).show();
-                MyProperties.setProperty(MyProperties.KEY_SWITCH,open+"");
+                properties.setProperty(MyProperties.KEY_SWITCH,open+"");
 //                killRunningApps();
                 kill("com.android.settings");
                 return true;
@@ -65,7 +64,7 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean timeSwitch = (boolean)newValue;
-                MyProperties.setProperty(MyProperties.TIME_SWITCH,timeSwitch+"");
+                properties.setProperty(MyProperties.TIME_SWITCH,timeSwitch+"");
 
 
                 if(timeSwitch) {
@@ -96,21 +95,21 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-                MyProperties.setProperty(MyTimer.END_HOUR,hourOfDay+"");
-                MyProperties.setProperty(MyTimer.END_MIN,minute+"");
+                properties.setProperty(MyTimer.END_HOUR,hourOfDay+"");
+                properties.setProperty(MyTimer.END_MIN,minute+"");
                 timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
 
             }
-        }, Integer.parseInt(MyProperties.getProperty(MyProperties.END_HOUR)), Integer.parseInt(MyProperties.getProperty(MyProperties.END_MIN)), true);
+        }, Integer.parseInt(properties.getProperty(MyProperties.END_HOUR)), Integer.parseInt(properties.getProperty(MyProperties.END_MIN)), true);
 
         final TimePickerDialog beginningTimeDialog = new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                MyProperties.setProperty(MyTimer.BEGIN_HOUR,hourOfDay+"");
-                MyProperties.setProperty(MyTimer.BEGIN_MIN,minute+"");
+                properties.setProperty(MyTimer.BEGIN_HOUR,hourOfDay+"");
+                properties.setProperty(MyTimer.BEGIN_MIN,minute+"");
                 endingTimeDialog.show();
             }
-        }, Integer.parseInt(MyProperties.getProperty(MyProperties.BEGIN_HOUR)), Integer.parseInt(MyProperties.getProperty(MyProperties.BEGIN_MIN)), true);
+        }, Integer.parseInt(properties.getProperty(MyProperties.BEGIN_HOUR)), Integer.parseInt(properties.getProperty(MyProperties.BEGIN_MIN)), true);
 
         beginningTimeDialog.setCancelable(false);
         beginningTimeDialog.setCanceledOnTouchOutside(false);

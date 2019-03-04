@@ -13,7 +13,7 @@ import java.util.Locale;
 import static android.content.Context.ALARM_SERVICE;
 
 public class MyTimer {
-//    private MyProperties properties;
+    private MyProperties properties;
     private AlarmManager beginAlarmManager, endAlarmManager;
     private Context context;
     private static int mBeginHour, mBeginMin, mEndHour, mEndMin;
@@ -28,7 +28,7 @@ public class MyTimer {
 
     public MyTimer(Context c){
         context = c;
-//        properties = new MyProperties(MyProperties.SETTINGPATH);
+        properties = new MyProperties(MyProperties.SETTINGPATH);
         beginAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
 //        beginAlarmManager.setTimeZone("GMT+08:00");
         endAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
@@ -83,10 +83,10 @@ public class MyTimer {
      */
     private void updateTime(){
         try{
-            mBeginHour = Integer.parseInt(MyProperties.getProperty(BEGIN_HOUR).trim());
-            mBeginMin = Integer.parseInt(MyProperties.getProperty(BEGIN_MIN).trim());
-            mEndHour = Integer.parseInt(MyProperties.getProperty(END_HOUR).trim());
-            mEndMin = Integer.parseInt(MyProperties.getProperty(END_MIN).trim());
+            mBeginHour = Integer.parseInt(properties.getProperty(BEGIN_HOUR).trim());
+            mBeginMin = Integer.parseInt(properties.getProperty(BEGIN_MIN).trim());
+            mEndHour = Integer.parseInt(properties.getProperty(END_HOUR).trim());
+            mEndMin = Integer.parseInt(properties.getProperty(END_MIN).trim());
         }catch (Exception e){
             e.printStackTrace();
         }
