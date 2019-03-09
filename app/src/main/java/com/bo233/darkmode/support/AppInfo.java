@@ -7,5 +7,6 @@ public class AppInfo {
     public String pkgName;
     public String appName;
     public Drawable appIcon;
+    public Boolean darkMode, killMode;
     public Intent appIntent;
 }

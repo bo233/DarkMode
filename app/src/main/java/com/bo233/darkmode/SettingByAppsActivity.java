@@ -5,14 +5,53 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class SettingByAppsActivity extends AppCompatActivity {
+
+    private LinearLayout toolBar, singleToolBar;
+    private Button modeSet, killSet, cancel;
+    private CheckBox multiChoiceBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_host);
+
+        toolBar = findViewById(R.id.tool_bar);
+        modeSet = findViewById(R.id.mode_btn);
+        killSet = findViewById(R.id.killer_btn);
+        cancel = findViewById(R.id.cancel_btn);
+//        multiChoiceBox = findViewById(R.id.multi_choice_box);
+
+        modeSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SettingByAppsActivity.this, "模式设置", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        killSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(SettingByAppsActivity.this, "强杀设置", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolBar.setVisibility(View.GONE);
+//                if(multiChoiceBox==null)
+//                    multiChoiceBox = findViewById(R.id.multi_choice_box);
+//                multiChoiceBox.setVisibility(View.GONE);
+            }
+        });
 
         TabHost tabHost = findViewById(R.id.tabhost);
         tabHost.setup();
@@ -40,8 +79,8 @@ public class SettingByAppsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 5, 1, "添加1");
-        menu.add(0, 6, 2, "删除1");
+        menu.add(0, 5, 1, "批量操作");
+        menu.add(0, 6, 2, "帮助");
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -49,10 +88,12 @@ public class SettingByAppsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 5:
-//                Toast.makeText(this, "添加1", Toast.LENGTH_SHORT).show();
+                toolBar.setVisibility(View.VISIBLE);
+//                if(multiChoiceBox==null)
+//                    multiChoiceBox = findViewById(R.id.multi_choice_box);
+//                multiChoiceBox.setVisibility(View.VISIBLE);
                 break;
             case 6:
-//                Toast.makeText(this, "删除1", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

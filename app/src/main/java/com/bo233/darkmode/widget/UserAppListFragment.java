@@ -1,5 +1,8 @@
-package com.bo233.darkmode.util;
+package com.bo233.darkmode.widget;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -9,15 +12,17 @@ import android.widget.ListView;
 
 import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
+import com.bo233.darkmode.util.AppHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.bo233.darkmode.util.AppHelper.getAppList;
 
-public class SystemAppListFragment extends ListFragment {
+public class UserAppListFragment extends ListFragment {
     private ArrayList<AppInfo> appList = new ArrayList<>();
 //    private ArrayList<AppInfo> systemAppList = new ArrayList<>();
-    private int typeOfApps = AppHelper.SYSTEM_APP_LIST;
+    private int typeOfApps = AppHelper.USER_APP_LIST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class SystemAppListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // 启动所选应用
 //        startActivity(appList.get(position).appIntent);
+        SingleSettingDialog dialog = new SingleSettingDialog(getActivity(), appList.get(position).appName);
+        dialog.show();
     }
 
 
