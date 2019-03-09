@@ -12,12 +12,14 @@ import com.bo233.darkmode.R;
 public class SingleSettingDialog extends AlertDialog{
 
     private Button cancel, modeSet, killSet, selfMode;
-    private TextView tv_text, title;
+    private TextView title;
     private String appName;
+    private Context context;
 
     public SingleSettingDialog(Context context, String appName) {
         super(context);
         this.appName = appName;
+        this.context = context;
     }
 
     @Override
@@ -28,7 +30,6 @@ public class SingleSettingDialog extends AlertDialog{
         modeSet = findViewById(R.id.dialog_btn_mode_setting);
         killSet = findViewById(R.id.dialog_btn_killer_setting);
         selfMode = findViewById(R.id.dialog_btn_self_mode);
-        tv_text = findViewById(R.id.dialog_text);
         title = findViewById(R.id.dialog_title);
 
         title.setText(appName);
@@ -37,6 +38,22 @@ public class SingleSettingDialog extends AlertDialog{
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SingleSettingDialog.this.dismiss();
+            }
+        });
+
+        modeSet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingDialog.showSetModeDialog(context);
+                SingleSettingDialog.this.dismiss();
+            }
+        });
+
+        killSet.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                SettingDialog.showSetKillDialog(context);
                 SingleSettingDialog.this.dismiss();
             }
         });

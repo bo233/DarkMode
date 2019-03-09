@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.bo233.darkmode.widget.SettingDialog;
+
 public class SettingByAppsActivity extends AppCompatActivity {
 
     private LinearLayout toolBar, singleToolBar;
@@ -32,14 +34,14 @@ public class SettingByAppsActivity extends AppCompatActivity {
         modeSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SettingByAppsActivity.this, "模式设置", Toast.LENGTH_LONG).show();
+                SettingDialog.showSetModeDialog(SettingByAppsActivity.this);
             }
         });
 
         killSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SettingByAppsActivity.this, "强杀设置", Toast.LENGTH_LONG).show();
+                SettingDialog.showSetKillDialog(SettingByAppsActivity.this);
             }
         });
 

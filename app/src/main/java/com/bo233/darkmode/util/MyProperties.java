@@ -46,26 +46,6 @@ public class MyProperties {
 
     }
 
-//    public MyProperties(String path){
-//        PROP_FILE = new File(SETTINGPATH);
-////        filePath = path;
-//        properties = new Properties();
-//        try {
-//            properties.load(new FileReader(PROP_FILE));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        if(!PROP_FILE.exists()) {
-//            PROP_FILE.getParentFile().mkdir();
-//            this.setProperty(KEY_SWITCH, "false");
-//            this.setProperty(TIME_SWITCH, "false");
-//            this.setProperty(BEGIN_HOUR, "0");
-//            this.setProperty(BEGIN_MIN, "0");
-//            this.setProperty(END_HOUR, "0");
-//            this.setProperty(END_MIN, "0");
-//
-//        }
-//    }
 
     public static boolean setProperty(String key, String value){
 //        boolean isSuccessful = true;

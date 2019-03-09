@@ -34,7 +34,7 @@ public class AppKiller {
     }
 
     public static void killSelectedApps(){
-
+        killApps(AppHelper.getKillPkgNames());
     }
 
     /**

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
 import com.bo233.darkmode.support.AppInfo;
 
@@ -14,13 +15,15 @@ import java.util.List;
 public class AppHelper {
     private static List<String> allPkgNames = new ArrayList<>();
     private static List<String> killPkgNames = new ArrayList<>();
+    private static List<String> normalModePkgNames = new ArrayList<>();
+    private static List<String> selfModePkgnames = new ArrayList<>();
     private static PackageManager packageManager;
     private static List<PackageInfo> packages = new ArrayList<>();
 
     public static final int USER_APP_LIST = 0;
     public static final int SYSTEM_APP_LIST = 1;
 
-    public static void setPackageManager(Activity a){
+    public static void setPackageManager(@NonNull Activity a){
         packageManager = a.getPackageManager();
         packages = packageManager.getInstalledPackages(0);
         updateAllPkgNames();
@@ -38,9 +41,11 @@ public class AppHelper {
         return allPkgNames;
     }
 
-    public static List<String> getSelectedPkgNames(){
+    public static List<String> getKillPkgNames(){
         return killPkgNames;
     }
+
+
 
     /**
      * 获取应用信息列表
