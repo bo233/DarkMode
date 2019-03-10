@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+import com.bo233.darkmode.util.MyFile;
 import com.bo233.darkmode.widget.SettingDialog;
 
 public class SettingByAppsActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab_host);
+        MyFile.init(this);
 
         toolBar = findViewById(R.id.tool_bar);
         modeSet = findViewById(R.id.mode_btn);
@@ -41,7 +43,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
         killSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingDialog.showSetKillDialog(SettingByAppsActivity.this);
+//                SettingDialog.showSetKillDialog(SettingByAppsActivity.this);
             }
         });
 

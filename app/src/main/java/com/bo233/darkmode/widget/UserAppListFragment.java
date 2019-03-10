@@ -42,10 +42,8 @@ public class UserAppListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // 启动所选应用
 //        startActivity(appList.get(position).appIntent);
-        String pkgName = appList.get(position).pkgName;
-        String appName = appList.get(position).appName;
-        SingleSettingDialog singleSettingDialog = new SingleSettingDialog(getActivity(), appName);
-        singleSettingDialog.show();
+        SingleSettingDialog dialog = new SingleSettingDialog(getActivity(),appList.get(position).appName, appList.get(position).pkgName);
+        dialog.show();
     }
 
 

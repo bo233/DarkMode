@@ -15,10 +15,12 @@ public class SingleSettingDialog extends AlertDialog{
     private TextView title;
     private String appName;
     private Context context;
+    private String pkgName;
 
-    public SingleSettingDialog(Context context, String appName) {
+    public SingleSettingDialog(Context context, String appName, String pkgName) {
         super(context);
         this.appName = appName;
+        this.pkgName = pkgName;
         this.context = context;
     }
 
@@ -53,7 +55,7 @@ public class SingleSettingDialog extends AlertDialog{
         killSet.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                SettingDialog.showSetKillDialog(context);
+                SettingDialog.showSetKillDialog(context, pkgName);
                 SingleSettingDialog.this.dismiss();
             }
         });

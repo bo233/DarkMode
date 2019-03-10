@@ -39,7 +39,7 @@ public class SystemAppListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         // 启动所选应用
 //        startActivity(appList.get(position).appIntent);
-        SingleSettingDialog dialog = new SingleSettingDialog(getActivity(), appList.get(position).appName);
+        SingleSettingDialog dialog = new SingleSettingDialog(getActivity(), appList.get(position).appName, appList.get(position).pkgName);
         dialog.show();
     }
 

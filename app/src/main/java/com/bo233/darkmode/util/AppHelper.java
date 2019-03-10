@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.bo233.darkmode.support.AppInfo;
 
@@ -20,8 +21,8 @@ public class AppHelper {
     private static PackageManager packageManager;
     private static List<PackageInfo> packages = new ArrayList<>();
 
-    public static final int USER_APP_LIST = 0;
-    public static final int SYSTEM_APP_LIST = 1;
+    public static final int USER_APP_LIST = 0, SYSTEM_APP_LIST = 1;
+    public static final int UPDATE_ADD = 2, UPDATE_REMOVE = 3;
 
     public static void setPackageManager(@NonNull Activity a){
         packageManager = a.getPackageManager();
@@ -45,6 +46,16 @@ public class AppHelper {
         return killPkgNames;
     }
 
+    public static void updateKillPkgNames(int flag, String s){
+        if(flag == UPDATE_ADD) {
+            killPkgNames.add(s);
+            Log.d("AppHelper", s+flag);
+        }
+        else if(flag == UPDATE_REMOVE){
+            killPkgNames.remove(s);
+            Log.d("AppHelper", s+flag);
+        }
+    }
 
 
     /**

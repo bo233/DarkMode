@@ -48,6 +48,7 @@ public class MainPreferences extends PreferenceFragment {
                 MyProperties.setProperty(MyProperties.KEY_SWITCH,open+"");
 //                killRunningApps();
                 kill("com.android.settings");
+                killSelectedApps();
                 return true;
             }
         });
