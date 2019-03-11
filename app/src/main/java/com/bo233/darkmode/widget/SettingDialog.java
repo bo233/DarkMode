@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.bo233.darkmode.util.AppHelper;
 
 public class SettingDialog {
-    public static void showSetModeDialog(final Context context){
+    public static void showSetModeDialog(final Context context, final String pkgName){
         final String radioItems[] = new String[]{"兼容模式", "自带夜间模式", "关闭"};
 
         AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
@@ -39,10 +39,13 @@ public class SettingDialog {
                         int choice = lw.getCheckedItemPosition();
                         switch (choice){
                             case 0:
+                                AppHelper.setMode(pkgName, AppHelper.MODE_NORMAL);
                                 break;
                             case 1:
+                                AppHelper.setMode(pkgName, AppHelper.MODE_SELF);
                                 break;
                             case 2:
+                                AppHelper.setMode(pkgName, AppHelper.MODE_OFF);
                                 break;
                             default:
                                 break;
@@ -91,10 +94,10 @@ public class SettingDialog {
 //                        Log.d("hhh233", choice+"");
                         switch (choice){
                             case 0:
-                                AppHelper.updateKillPkgNames(AppHelper.UPDATE_ADD, pkgName);
+                                AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_ADD);
                                 break;
                             case 1:
-                                AppHelper.updateKillPkgNames(AppHelper.UPDATE_REMOVE, pkgName);
+                                AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_REMOVE);
                                 break;
                             default:
                                 break;

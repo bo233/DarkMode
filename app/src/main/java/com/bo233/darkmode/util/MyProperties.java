@@ -23,6 +23,9 @@ public class MyProperties {
     public static final String END_HOUR = "ending_hour";
     public static final String END_MIN = "ending_min";
 
+    public static final String MODE_OFF = "off", MODE_NORMAL = "normal", MODE_SELF = "self";
+
+
     public static void init(){
         if(properties == null) {
             properties = new Properties();
@@ -40,9 +43,9 @@ public class MyProperties {
                 setProperty(BEGIN_MIN, "0");
                 setProperty(END_HOUR, "0");
                 setProperty(END_MIN, "0");
-
             }
         }
+        ModeProperties.init();
 
     }
 
@@ -62,5 +65,45 @@ public class MyProperties {
 
     public static String getProperty(String key){
         return properties.getProperty(key);
+    }
+
+
+    public static class ModeProperties{
+        private static Properties modeProp;
+        private static File MODE_LIST_FILE;
+        private static final String modeFilePath = "/sdcard/Android/data/com.bo233.darkmode/mode_list.ini";
+        private static final String modeComment = "This is mode list.";
+
+        public static void init(){
+            if(modeProp == null) {
+                modeProp = new Properties();
+                MODE_LIST_FILE = new File(modeFilePath);
+                try {
+                    modeProp.load(new FileReader(MODE_LIST_FILE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (!MODE_LIST_FILE.exists()) {
+                    MODE_LIST_FILE.getParentFile().mkdir();
+                }
+            }
+        }
+
+        public static boolean setProperty(String key, String value){
+//        boolean isSuccessful = true;
+            modeProp.setProperty(key, value);
+            try {
+                modeProp.store(new FileOutputStream(MODE_LIST_FILE),modeComment);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        public static String getProperty(String key){
+            return modeProp.getProperty(key);
+        }
     }
 }

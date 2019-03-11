@@ -49,5 +49,9 @@ public class MyFile {
         }
     }
 
+    public static void saveAll(){
+        save(AppHelper.getKillPkgNames());
+    }
+
 
 }

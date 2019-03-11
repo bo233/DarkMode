@@ -47,7 +47,7 @@ public class SingleSettingDialog extends AlertDialog{
         modeSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingDialog.showSetModeDialog(context);
+                SettingDialog.showSetModeDialog(context, pkgName);
                 SingleSettingDialog.this.dismiss();
             }
         });

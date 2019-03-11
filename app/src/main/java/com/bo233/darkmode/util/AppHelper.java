@@ -16,13 +16,14 @@ import java.util.List;
 public class AppHelper {
     private static List<String> allPkgNames = new ArrayList<>();
     private static List<String> killPkgNames = new ArrayList<>();
-    private static List<String> normalModePkgNames = new ArrayList<>();
-    private static List<String> selfModePkgnames = new ArrayList<>();
+//    private static List<String> normalModePkgNames = new ArrayList<>();
+//    private static List<String> selfModePkgnames = new ArrayList<>();
     private static PackageManager packageManager;
     private static List<PackageInfo> packages = new ArrayList<>();
 
     public static final int USER_APP_LIST = 0, SYSTEM_APP_LIST = 1;
     public static final int UPDATE_ADD = 2, UPDATE_REMOVE = 3;
+    public static final int MODE_OFF = 4, MODE_NORMAL = 5, MODE_SELF = 6;
 
     public static void setPackageManager(@NonNull Activity a){
         packageManager = a.getPackageManager();
@@ -46,14 +47,30 @@ public class AppHelper {
         return killPkgNames;
     }
 
-    public static void updateKillPkgNames(int flag, String s){
+    public static void updateKillPkgNames( String pkgName, int flag){
         if(flag == UPDATE_ADD) {
-            killPkgNames.add(s);
-            Log.d("AppHelper", s+flag);
+            killPkgNames.add(pkgName);
+//            Log.d("AppHelper", s+flag);
         }
         else if(flag == UPDATE_REMOVE){
-            killPkgNames.remove(s);
-            Log.d("AppHelper", s+flag);
+            killPkgNames.remove(pkgName);
+//            Log.d("AppHelper", s+flag);
+        }
+    }
+
+    public static void setMode(String pkgName, int flag){
+        switch (flag){
+            case MODE_OFF:
+                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_OFF);
+                break;
+            case MODE_NORMAL:
+                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_NORMAL);
+                break;
+            case MODE_SELF:
+                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_SELF);
+                break;
+            default:
+                break;
         }
     }
 

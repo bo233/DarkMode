@@ -36,7 +36,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
         modeSet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SettingDialog.showSetModeDialog(SettingByAppsActivity.this);
+//                SettingDialog.showSetModeDialog(SettingByAppsActivity.this);
             }
         });
 
@@ -75,10 +75,14 @@ public class SettingByAppsActivity extends AppCompatActivity {
                 if (tabId.equals("system_apps_tab")) {   //第二个标签
 
                 }
-
             }
         });
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyFile.saveAll();
     }
 
     @Override
