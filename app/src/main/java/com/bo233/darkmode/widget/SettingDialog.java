@@ -52,6 +52,7 @@ public class SettingDialog {
                             default:
                                 break;
                         }
+                        AppHelper.updateAdapter();
                         dialog.dismiss();
                     }
                 });
@@ -104,6 +105,7 @@ public class SettingDialog {
                             default:
                                 break;
                         }
+//                        AppHelper.updateAdapter();
                         dialog.dismiss();
                     }
                 });

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
 
 import java.util.ArrayList;
@@ -22,6 +23,10 @@ public class AppHelper {
     public static final int USER_APP_LIST = 0, SYSTEM_APP_LIST = 1;
     public static final int UPDATE_ADD = 2, UPDATE_REMOVE = 3;
     public static final int MODE_OFF = 4, MODE_NORMAL = 5, MODE_SELF = 6;
+
+    private static int itemPositon = -1;
+    private static AppAdapter adapter = null;
+    private static ArrayList<AppInfo> appList = null;
 
     public static void setPackageManager(@NonNull Activity a){
         packageManager = a.getPackageManager();
@@ -71,6 +76,32 @@ public class AppHelper {
                 break;
         }
     }
+
+    /**
+     * 为更新AppAdapter获取参数
+     */
+    public static void setUpdateAdapterParam(AppAdapter adapter, ArrayList<AppInfo> appList, int position){
+        AppHelper.adapter = adapter;
+        AppHelper.appList = appList;
+        itemPositon = position;
+    }
+
+    public static void updateAdapter(){
+        if(AppHelper.itemPositon != -1 && AppHelper.appList != null && AppHelper.adapter != null){
+            String mode = MyProperties.ModeProperties.getProperty(appList.get(itemPositon).pkgName);
+            if(mode == null || mode.equals(MyProperties.MODE_NORMAL))
+                appList.get(itemPositon).darkMode = 1;
+            else if(mode.equals(MyProperties.MODE_OFF))
+                appList.get(itemPositon).darkMode = 0;
+            else if(mode.equals(MyProperties.MODE_SELF))
+                appList.get(itemPositon).darkMode = 2;
+            adapter.notifyDataSetChanged();
+            AppHelper.itemPositon = -1;
+            AppHelper.appList = null;
+            AppHelper.adapter = null;
+        }
+    }
+
 
 
     /**

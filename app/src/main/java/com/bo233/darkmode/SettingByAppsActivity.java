@@ -82,7 +82,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyFile.saveAll();
+//        MyFile.saveAll();
     }
 
     @Override
@@ -106,7 +106,9 @@ public class SettingByAppsActivity extends AppCompatActivity {
             default:
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
 
 }
