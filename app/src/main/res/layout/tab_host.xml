@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="模式设置" />
+            android:text="@string/mode_set_title" />
 
         <Button
             android:id="@+id/killer_btn"
@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="强杀后台" />
+            android:text="@string/kill_set_title" />
 
         <Button
             android:id="@+id/cancel_btn"
@@ -85,7 +85,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="取消" />
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

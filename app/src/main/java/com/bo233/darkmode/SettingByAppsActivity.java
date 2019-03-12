@@ -61,8 +61,8 @@ public class SettingByAppsActivity extends AppCompatActivity {
         tabHost.setup();
 
 //        tabHost.addTab((tabHost.newTabSpec("user_apps_tab").setIndicator("233").);
-        tabHost.addTab(tabHost.newTabSpec("user_apps_tab").setIndicator("用户应用").setContent(R.id.user_apps_fragment));
-        tabHost.addTab(tabHost.newTabSpec("system_apps_tab").setIndicator("系统应用").setContent(R.id.system_apps_fragment));
+        tabHost.addTab(tabHost.newTabSpec("user_apps_tab").setIndicator(getString(R.string.user_apps_title)).setContent(R.id.user_apps_fragment));
+        tabHost.addTab(tabHost.newTabSpec("system_apps_tab").setIndicator(getString(R.string.system_aps_title)).setContent(R.id.system_apps_fragment));
 
         //标签切换事件处理，setOnTabChangedListener
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener(){
@@ -87,21 +87,21 @@ public class SettingByAppsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 5, 1, "批量操作");
-        menu.add(0, 6, 2, "帮助");
+        menu.add(0, 5, 1, getString(R.string.bulk_process));
+        menu.add(0, 6, 2, getString(R.string.help));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case 5:
+            case 5: //批量操作
                 toolBar.setVisibility(View.VISIBLE);
 //                if(multiChoiceBox==null)
 //                    multiChoiceBox = findViewById(R.id.multi_choice_box);
 //                multiChoiceBox.setVisibility(View.VISIBLE);
                 break;
-            case 6:
+            case 6: //帮助
                 break;
             default:
                 break;

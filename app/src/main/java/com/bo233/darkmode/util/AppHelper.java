@@ -16,8 +16,6 @@ import java.util.List;
 public class AppHelper {
     private static List<String> allPkgNames = new ArrayList<>();
     private static List<String> killPkgNames = new ArrayList<>();
-//    private static List<String> normalModePkgNames = new ArrayList<>();
-//    private static List<String> selfModePkgnames = new ArrayList<>();
     private static PackageManager packageManager;
     private static List<PackageInfo> packages = new ArrayList<>();
 

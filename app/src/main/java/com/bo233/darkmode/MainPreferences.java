@@ -38,16 +38,16 @@ public class MainPreferences extends PreferenceFragment {
 //        properties = new MyProperties(MyProperties.SETTINGPATH);
 
         timer = new MyTimer(getActivity());
-        timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
+        timePreference.setSummary(getString(R.string.time_set_summary)+timer.getStringTime());
 
         openPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 boolean open=(boolean)o;
-                Toast.makeText(getActivity(), "重新启动所有应用以生效", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.restart_app_remind), Toast.LENGTH_SHORT).show();
                 MyProperties.setProperty(MyProperties.KEY_SWITCH,open+"");
 //                killRunningApps();
-                kill("com.android.settings");
+//                kill("com.android.settings");
                 killSelectedApps();
                 return true;
             }
@@ -99,7 +99,7 @@ public class MainPreferences extends PreferenceFragment {
 
                 MyProperties.setProperty(MyTimer.END_HOUR,hourOfDay+"");
                 MyProperties.setProperty(MyTimer.END_MIN,minute+"");
-                timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
+                timePreference.setSummary(getString(R.string.time_set_summary)+timer.getStringTime());
 
             }
         }, Integer.parseInt(MyProperties.getProperty(MyProperties.END_HOUR)), Integer.parseInt(MyProperties.getProperty(MyProperties.END_MIN)), true);
@@ -115,12 +115,12 @@ public class MainPreferences extends PreferenceFragment {
 
         beginningTimeDialog.setCancelable(false);
         beginningTimeDialog.setCanceledOnTouchOutside(false);
-        beginningTimeDialog.setTitle("开始时间");
+        beginningTimeDialog.setTitle(getString(R.string.end_time_title));
         beginningTimeDialog.show();
 
         endingTimeDialog.setCancelable(false);
         endingTimeDialog.setCanceledOnTouchOutside(false);
-        endingTimeDialog.setTitle("结束时间");
+        endingTimeDialog.setTitle(getString(R.string.begin_time_title));
 
 //        beginningTimeDialog.setOnKeyListener();
 
@@ -128,7 +128,7 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public void onCancel(DialogInterface dialog) {
                 beginningTimeDialog.show();
-                Toast.makeText(getActivity(),"请勿取消", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.dont_cancel), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,7 +136,7 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public void onCancel(DialogInterface dialog) {
                 endingTimeDialog.show();
-                Toast.makeText(getActivity(),"请勿取消", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.dont_cancel), Toast.LENGTH_SHORT).show();
             }
         });
 

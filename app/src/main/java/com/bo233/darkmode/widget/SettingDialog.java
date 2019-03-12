@@ -7,14 +7,16 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bo233.darkmode.R;
 import com.bo233.darkmode.util.AppHelper;
 
 public class SettingDialog {
     public static void showSetModeDialog(final Context context, final String pkgName){
-        final String radioItems[] = new String[]{"兼容模式", "自带夜间模式", "关闭"};
+        final String radioItems[] = new String[]{context.getString(R.string.normal_mode), context.getString(R.string.self_mode),
+                context.getString(R.string.off_mode)};
 
         AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
-        radioDialog.setTitle("设置模式");
+        radioDialog.setTitle(R.string.mode_set_title);
 
     /*
         设置item 不能用setMessage()
@@ -31,20 +33,20 @@ public class SettingDialog {
             }
         });
 
-        radioDialog.setPositiveButton("确认",
+        radioDialog.setPositiveButton(R.string.commit,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ListView lw = ((AlertDialog)dialog).getListView();
                         int choice = lw.getCheckedItemPosition();
                         switch (choice){
-                            case 0:
+                            case 0: //normal mode
                                 AppHelper.setMode(pkgName, AppHelper.MODE_NORMAL);
                                 break;
-                            case 1:
+                            case 1: //self mode
                                 AppHelper.setMode(pkgName, AppHelper.MODE_SELF);
                                 break;
-                            case 2:
+                            case 2: //off
                                 AppHelper.setMode(pkgName, AppHelper.MODE_OFF);
                                 break;
                             default:
@@ -54,7 +56,7 @@ public class SettingDialog {
                     }
                 });
 
-        radioDialog.setNegativeButton("取消",
+        radioDialog.setNegativeButton(R.string.cancel,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -66,10 +68,10 @@ public class SettingDialog {
     }
 
     public static void showSetKillDialog(final Context context, final String pkgName){
-        final String radioItems[] = new String[]{"切换夜间模式时强行关闭后台", "切换夜间模式时不关闭后台"};
+        final String radioItems[] = new String[]{context.getString(R.string.kill_mode), context.getString(R.string.dont_kill_mode)};
 
         AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
-        radioDialog.setTitle("强杀后台");
+        radioDialog.setTitle(R.string.kill_set_title);
 
     /*
         设置item 不能用setMessage()
@@ -85,7 +87,7 @@ public class SettingDialog {
             }
         });
 
-        radioDialog.setPositiveButton("确认",
+        radioDialog.setPositiveButton(R.string.commit,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -93,10 +95,10 @@ public class SettingDialog {
                         int choice = lw.getCheckedItemPosition();
 //                        Log.d("hhh233", choice+"");
                         switch (choice){
-                            case 0:
+                            case 0: //kill
                                 AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_ADD);
                                 break;
-                            case 1:
+                            case 1: //don't kill
                                 AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_REMOVE);
                                 break;
                             default:
@@ -106,7 +108,7 @@ public class SettingDialog {
                     }
                 });
 
-        radioDialog.setNegativeButton("取消",
+        radioDialog.setNegativeButton(R.string.cancel,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

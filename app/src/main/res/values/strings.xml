@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">对影</string>
+    <string name="end_time_title">开始时间</string>
+    <string name="begin_time_title">结束时间</string>
+    <string name="time_set_summary">勾选后设定时间段，当前的时间段为</string>
+    <string name="restart_app_remind">重新启动所有应用以生效</string>
+    <string name="dont_cancel">请勿取消</string>
+    <string name="mode_set_title">模式设置</string>
+    <string name="kill_set_title">强杀后台</string>
+    <string name="normal_mode">普通模式</string>
+    <string name="self_mode">自带夜间模式</string>
+    <string name="off_mode">关闭</string>
+    <string name="kill_mode">切换夜间模式时强行关闭后台</string>
+    <string name="dont_kill_mode">切换夜间模式时不关闭后台</string>
+    <string name="commit">确认</string>
+    <string name="cancel">取消</string>
+    <string name="user_apps_title">用户应用</string>
+    <string name="system_aps_title">系统应用</string>
+    <string name="help">帮助</string>
+    <string name="bulk_process">批量操作</string>
+    <string name="not_active_hint">模块未激活</string>
+    <string name="self_mode_set">自带设置</string>
+    <string name="single_set_hint">针对该应用进行独立设置\n</string>
 </resources>
