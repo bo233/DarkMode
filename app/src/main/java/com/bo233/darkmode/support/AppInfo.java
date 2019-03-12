@@ -7,6 +7,7 @@ public class AppInfo {
     public String pkgName;
     public String appName;
     public Drawable appIcon;
-    public Boolean darkMode, killMode;
-    public Intent appIntent;
+    public int darkMode; //0:无 1:普通模式 2:自带模式
+    public int killMode; //0:关 1：开
+//    public Intent appIntent;
 }

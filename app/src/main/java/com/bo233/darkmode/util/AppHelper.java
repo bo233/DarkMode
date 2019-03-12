@@ -92,7 +92,15 @@ public class AppHelper {
                     info.pkgName = packageInfo.packageName;
                     info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
                     // 获取该应用安装包的Intent，用于启动该应用
-                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+//                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+                    String mode = MyProperties.ModeProperties.getProperty(info.pkgName);
+                    if(mode==null || mode.equals(MyProperties.MODE_NORMAL))
+                        info.darkMode = 1;
+                    else if(mode.equals(MyProperties.MODE_OFF))
+                        info.darkMode = 0;
+                    else if(mode.equals(MyProperties.MODE_SELF))
+                        info.darkMode = 2;
+
                     appList.add(info);
                 }
             } else {
@@ -104,7 +112,15 @@ public class AppHelper {
                     info.pkgName = packageInfo.packageName;
                     info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
                     // 获取该应用安装包的Intent，用于启动该应用
-                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+//                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
+                    String mode = MyProperties.ModeProperties.getProperty(info.pkgName);
+                    if(mode==null || mode.equals(MyProperties.MODE_NORMAL))
+                        info.darkMode = 1;
+                    else if(mode.equals(MyProperties.MODE_OFF))
+                        info.darkMode = 0;
+                    else if(mode.equals(MyProperties.MODE_SELF))
+                        info.darkMode = 2;
+
                     appList.add(info);
                 }
             }

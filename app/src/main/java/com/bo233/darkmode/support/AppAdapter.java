@@ -13,8 +13,7 @@ import com.bo233.darkmode.R;
 import java.util.List;
 
 class ViewHolder {
-    public TextView appName;
-    public TextView pkgName;
+    public TextView appName, pkgName, modeState, killState;
     public ImageView appIcon;
 }
 
@@ -49,12 +48,11 @@ public class AppAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = infater.inflate(R.layout.app_item, null);
-            holder.appIcon = (ImageView) convertView
-                    .findViewById(R.id.app_icon);
-            holder.appName = (TextView) convertView
-                    .findViewById(R.id.app_name);
-            holder.pkgName = (TextView) convertView
-                    .findViewById(R.id.pkg_name);
+            holder.appIcon =  convertView.findViewById(R.id.app_icon);
+            holder.appName =  convertView.findViewById(R.id.app_name);
+            holder.pkgName =  convertView.findViewById(R.id.pkg_name);
+            holder.modeState = convertView.findViewById(R.id.set_mode);
+            holder.killState = convertView.findViewById(R.id.kill_mode);
 
             convertView.setTag(holder);
         } else {
@@ -66,6 +64,7 @@ public class AppAdapter extends BaseAdapter {
         holder.appIcon.setImageDrawable(appInfo.appIcon);
         holder.appName.setText(appInfo.appName);
         holder.pkgName.setText(appInfo.pkgName);
+        holder.modeState.setText("当前模式："+(appInfo.darkMode==0?"关闭":(appInfo.darkMode==1?"普通模式":"自带夜间模式")));
 
         return convertView;
     }
