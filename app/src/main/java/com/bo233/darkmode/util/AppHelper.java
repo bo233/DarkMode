@@ -86,7 +86,7 @@ public class AppHelper {
         itemPositon = position;
     }
 
-    public static void updateAdapter(){
+    public static void updateAdapterByModeSet(){
         if(AppHelper.itemPositon != -1 && AppHelper.appList != null && AppHelper.adapter != null){
             String mode = MyProperties.ModeProperties.getProperty(appList.get(itemPositon).pkgName);
             if(mode == null || mode.equals(MyProperties.MODE_NORMAL))

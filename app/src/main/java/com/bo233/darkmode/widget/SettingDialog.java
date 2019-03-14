@@ -3,9 +3,7 @@ package com.bo233.darkmode.widget;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.bo233.darkmode.R;
 import com.bo233.darkmode.util.AppHelper;
@@ -52,7 +50,7 @@ public class SettingDialog {
                             default:
                                 break;
                         }
-                        AppHelper.updateAdapter();
+                        AppHelper.updateAdapterByModeSet();
                         dialog.dismiss();
                     }
                 });
@@ -105,7 +103,7 @@ public class SettingDialog {
                             default:
                                 break;
                         }
-//                        AppHelper.updateAdapter();
+//                        AppHelper.updateAdapterByModeSet();
                         dialog.dismiss();
                     }
                 });

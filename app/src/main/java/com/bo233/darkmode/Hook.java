@@ -247,8 +247,8 @@ public class Hook implements IXposedHookLoadPackage {
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "onDraw", Canvas.class, new XC_MethodHook() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
 //                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
@@ -259,8 +259,8 @@ public class Hook implements IXposedHookLoadPackage {
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "onDraw", Canvas.class, AttributeSet.class, new XC_MethodHook() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
 //                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
@@ -271,8 +271,8 @@ public class Hook implements IXposedHookLoadPackage {
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "onDraw", Canvas.class, AttributeSet.class, int.class, new XC_MethodHook() {
                     @Override
-                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                        super.afterHookedMethod(param);
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
 //                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
