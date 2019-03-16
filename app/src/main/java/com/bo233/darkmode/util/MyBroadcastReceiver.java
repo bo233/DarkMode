@@ -26,5 +26,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             AppKiller.killSelectedApps();
             Log.d("myReceive", "open:false");
         }
+        else if("setNightModeView".equals(intent.getAction())){
+            Log.d("myReceiver", "setNightModeView");
+        }
     }
 }

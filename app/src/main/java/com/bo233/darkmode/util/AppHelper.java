@@ -1,12 +1,10 @@
 package com.bo233.darkmode.util;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
@@ -24,7 +22,7 @@ public class AppHelper {
     public static final int UPDATE_ADD = 2, UPDATE_REMOVE = 3;
     public static final int MODE_OFF = 4, MODE_NORMAL = 5, MODE_SELF = 6;
 
-    private static int itemPositon = -1;
+    private static int itemPosition = -1;
     private static AppAdapter adapter = null;
     private static ArrayList<AppInfo> appList = null;
 
@@ -80,23 +78,23 @@ public class AppHelper {
     /**
      * 为更新AppAdapter获取参数
      */
-    public static void setUpdateAdapterParam(AppAdapter adapter, ArrayList<AppInfo> appList, int position){
+    public static void setUpdateAdapterParam(final AppAdapter adapter, final ArrayList<AppInfo> appList, int position){
         AppHelper.adapter = adapter;
         AppHelper.appList = appList;
-        itemPositon = position;
+        itemPosition = position;
     }
 
     public static void updateAdapterByModeSet(){
-        if(AppHelper.itemPositon != -1 && AppHelper.appList != null && AppHelper.adapter != null){
-            String mode = MyProperties.ModeProperties.getProperty(appList.get(itemPositon).pkgName);
+        if(AppHelper.itemPosition != -1 && AppHelper.appList != null && AppHelper.adapter != null){
+            String mode = MyProperties.ModeProperties.getProperty(appList.get(itemPosition).pkgName);
             if(mode == null || mode.equals(MyProperties.MODE_NORMAL))
-                appList.get(itemPositon).darkMode = 1;
+                appList.get(itemPosition).darkMode = 1;
             else if(mode.equals(MyProperties.MODE_OFF))
-                appList.get(itemPositon).darkMode = 0;
+                appList.get(itemPosition).darkMode = 0;
             else if(mode.equals(MyProperties.MODE_SELF))
-                appList.get(itemPositon).darkMode = 2;
+                appList.get(itemPosition).darkMode = 2;
             adapter.notifyDataSetChanged();
-            AppHelper.itemPositon = -1;
+            AppHelper.itemPosition = -1;
             AppHelper.appList = null;
             AppHelper.adapter = null;
         }

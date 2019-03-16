@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 import com.bo233.darkmode.util.MyProperties;
 
@@ -22,6 +23,7 @@ public class Hook implements IXposedHookLoadPackage {
 //    private MyProperties properties;
     private final int textColor = 0xff808080;
     private final int backgndColor = 0xff101010;
+    private ClassLoader loader;
 //    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 
 //    @Override
@@ -33,12 +35,13 @@ public class Hook implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        ClassLoader loader = loadPackageParam.classLoader;
+        loader = loadPackageParam.classLoader;
         String packageName = loadPackageParam.packageName;
 
 //        properties = new MyProperties(SETTINGPATH);
         MyProperties.init();
 
+        //hook自身以检测模块是否激活
         if(packageName.equals("com.bo233.darkmode")) {
             XposedHelpers.findAndHookMethod("com.bo233.darkmode.MainActivity", loadPackageParam.classLoader,
                     "isModuleActive", XC_MethodReplacement.returnConstant(true));
@@ -47,29 +50,33 @@ public class Hook implements IXposedHookLoadPackage {
 
         if(!packageName.equals("com.android.systemui"))
             hookJudge(loader, packageName);
-//            hookExec(loader, packageName);
+//            normalHookExec(loader, packageName);
     }
 
+
+    /**
+     * 通过包名来判断使用何种模式来hook
+     */
     private void hookJudge(ClassLoader loader, String pkgName){
 //        Log.d("hookJudge", pkgName+":"+MyProperties.ModeProperties.getProperty(pkgName));
         if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
             return;
         if(MyProperties.ModeProperties.getProperty(pkgName)==null ||
                 MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_NORMAL))
-            hookExec(loader, pkgName);
-        if(MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_OFF))
+            normalHookExec(loader, pkgName);
+        else if(MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_OFF))
             return;
         else if(MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_SELF))
             ; // need add function
     }
 
-    private void hookExec(ClassLoader classLoader, String pkgName){
+    private void normalHookExec(ClassLoader classLoader, String pkgName){
 
         try{
             hookText(classLoader);
             hookDrawColor(classLoader);
             hookViewBackground(classLoader);
-            hookView(classLoader);
+            hookMoreView(classLoader);
 //            hookCardView(classLoader);
 
         } catch (Exception e){
@@ -77,6 +84,7 @@ public class Hook implements IXposedHookLoadPackage {
         }
 
     }
+
 
 
     private void hookText(ClassLoader classLoader){
@@ -243,7 +251,11 @@ public class Hook implements IXposedHookLoadPackage {
 
     }
 
-    private void hookView(ClassLoader classLoader){
+
+    /**
+     * 通过hook住View的onDraw()方法来强行调用setBackgroundColor方法
+     */
+    private void hookMoreView(ClassLoader classLoader){
         XposedHelpers.findAndHookMethod("android.view.View", classLoader,
                 "onDraw", Canvas.class, new XC_MethodHook() {
                     @Override
@@ -282,38 +294,56 @@ public class Hook implements IXposedHookLoadPackage {
     }
 
 
-    private void hookCardView(ClassLoader classLoader){
-        try {
-            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
-                    "setCardBackgroundColor", int.class, new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            super.beforeHookedMethod(param);
-//                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
-//                                return;
-
-                            Log.d("hookCardView", "int");
-                            param.args[0] = backgndColor;
-                        }
-                    });
-
-            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
-                    "setCardBackgroundColor", ColorStateList.class, new XC_MethodHook() {
-                        @Override
-                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                            super.beforeHookedMethod(param);
-//                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
-//                                return;
-
-                            ColorStateList c = ColorStateList.valueOf(backgndColor);
-
-                            param.args[0] = c;
-                            Log.d("hookCardView", "ColorStateList");
-                        }
-                    });
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    /**
+     * 根据用户点击来获取对应控件
+     */
+    public static void hookNightModeSwitch(ClassLoader classLoader){
+        XposedHelpers.findAndHookMethod("android.view.View.OnClickListener", classLoader,
+                "onClick", View.class, new XC_MethodHook() {
+                    @Override
+                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
+                        //param.args[0];
+                    }
+                });
     }
+
+//    public static ClassLoader getClassLoader(){
+//        return loader;
+//    }
+
+//    private void hookCardView(ClassLoader classLoader){
+//        try {
+//            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
+//                    "setCardBackgroundColor", int.class, new XC_MethodHook() {
+//                        @Override
+//                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+//                            super.beforeHookedMethod(param);
+////                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
+////                                return;
+//
+//                            Log.d("hookCardView", "int");
+//                            param.args[0] = backgndColor;
+//                        }
+//                    });
+//
+//            XposedHelpers.findAndHookMethod("android.support.v7.widget.CardView", classLoader,
+//                    "setCardBackgroundColor", ColorStateList.class, new XC_MethodHook() {
+//                        @Override
+//                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+//                            super.beforeHookedMethod(param);
+////                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
+////                                return;
+//
+//                            ColorStateList c = ColorStateList.valueOf(backgndColor);
+//
+//                            param.args[0] = c;
+//                            Log.d("hookCardView", "ColorStateList");
+//                        }
+//                    });
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }
 

@@ -60,6 +60,15 @@ public class SingleSettingDialog extends AlertDialog{
             }
         });
 
+        selfMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SettingDialog.showSelfModeHelpDialog(context);
+                new SelfSettingNotification(context);
+                SingleSettingDialog.this.dismiss();
+            }
+        });
+
 
     }
 

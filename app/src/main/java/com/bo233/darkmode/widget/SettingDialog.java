@@ -66,6 +66,7 @@ public class SettingDialog {
         radioDialog.create().show();
     }
 
+
     public static void showSetKillDialog(final Context context, final String pkgName){
         final String radioItems[] = new String[]{context.getString(R.string.kill_mode), context.getString(R.string.dont_kill_mode)};
 
@@ -117,6 +118,25 @@ public class SettingDialog {
                 });
 
         radioDialog.create().show();
+    }
+
+
+    public static void showSelfModeHelpDialog(final Context context){
+        AlertDialog.Builder normalDialog = new AlertDialog.Builder(context);
+
+        normalDialog.setTitle(R.string.self_set_help_title);
+        normalDialog.setMessage(R.string.self_set_help);
+        //设置按钮
+        normalDialog.setPositiveButton(R.string.commit
+                , new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        normalDialog.create().show();
+
     }
 
 }

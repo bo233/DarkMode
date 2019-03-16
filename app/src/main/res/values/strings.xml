@@ -21,4 +21,6 @@
     <string name="not_active_hint">模块未激活</string>
     <string name="self_mode_set">自带设置</string>
     <string name="single_set_hint">针对该应用进行独立设置\n</string>
+    <string name="self_set_help_title">关于自带设置的帮助</string>
+    <string name="self_set_help">“自带设置”是为了获取到APP中切换夜间模式的开关。\n\n点击“自带设置”后，会弹出通知栏设置。此时请切换到APP的设置页，并且点击通知栏设置，随后点击APP中切换夜间模式的开关，即可完成设置。</string>
 </resources>
