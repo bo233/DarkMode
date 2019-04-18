@@ -21,9 +21,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 //, IXposedHookInitPackageResources
 public class Hook implements IXposedHookLoadPackage {
 //    private MyProperties properties;
-    private final int textColor = 0xff808080;
-    private final int backgndColor = 0xff101010;
-    private ClassLoader loader;
+    private static final int textColor = 0xff808080;
+    private static final int backgndColor = 0xff101010;
 //    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 
 //    @Override
@@ -35,7 +34,7 @@ public class Hook implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        loader = loadPackageParam.classLoader;
+        ClassLoader loader = loadPackageParam.classLoader;
         String packageName = loadPackageParam.packageName;
 
 //        properties = new MyProperties(SETTINGPATH);
@@ -47,12 +46,21 @@ public class Hook implements IXposedHookLoadPackage {
                     "isModuleActive", XC_MethodReplacement.returnConstant(true));
         }
 
+        if(MyProperties.getProperty(MyProperties.SELF_SETTING)!=null &&
+                MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true"))
+            hookNightSwitch(packageName);
+
 
         if(!packageName.equals("com.android.systemui"))
             hookJudge(loader, packageName);
 //            normalHookExec(loader, packageName);
     }
 
+
+    private void hookNightSwitch(String pkgName){
+
+
+    }
 
     /**
      * 通过包名来判断使用何种模式来hook

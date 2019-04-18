@@ -22,7 +22,8 @@ public class MyProperties {
     public static final String BEGIN_MIN = "beginning_min";
     public static final String END_HOUR = "ending_hour";
     public static final String END_MIN = "ending_min";
-
+    public static final String SELF_SETTING_PKG_NAME = "self_setting_pkg_name";
+    public static final String SELF_SETTING = "self_setting";
     public static final String MODE_OFF = "off", MODE_NORMAL = "normal", MODE_SELF = "self";
 
 

@@ -17,14 +17,14 @@ public class SelfSettingNotification {
         Intent intent = new Intent(context, MyBroadcastReceiver.class);
         intent.setAction("setNightModeView");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.id.app_icon, "233", pendingIntent).build();
+        NotificationCompat.Action action = new NotificationCompat.Action.Builder(R.id.app_icon, context.getString(R.string.notification_start_setting), pendingIntent).build();
 
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, "bo233.darkmode")
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("设置")
-                        .setContentText("Hello World!")
+                        .setContentTitle(context.getString(R.string.notification_title))
+                        .setContentText(context.getString(R.string.notification_summary))
                         .addAction(action);
 //设置点击通知跳转的activity
 //        Intent resultIntent = new Intent(this, ResultActivity.class);
