@@ -70,7 +70,7 @@ public class SingleSettingDialog extends AlertDialog{
                 new SelfSettingNotification(context);
                 SingleSettingDialog.this.dismiss();
                 MyProperties.setProperty(MyProperties.SELF_SETTING_PKG_NAME, pkgName);
-                MyProperties.setProperty(MyProperties.SELF_SETTING, "true");
+//                MyProperties.setProperty(MyProperties.SELF_SETTING, "true");
                 AppKiller.kill(pkgName);
             }
         });

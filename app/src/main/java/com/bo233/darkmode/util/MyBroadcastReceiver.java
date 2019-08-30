@@ -8,6 +8,8 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bo233.darkmode.Hook;
+
 import java.lang.reflect.Method;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -34,6 +36,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             case "setNightModeView":
                 Log.d("myReceiver", "setNightModeView");
                 collapseStatusBar(context);
+                MyProperties.setProperty(MyProperties.SELF_SETTING, "true");
                 break;
         }
     }

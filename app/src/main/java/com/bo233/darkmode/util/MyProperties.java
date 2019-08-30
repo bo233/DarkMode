@@ -25,6 +25,7 @@ public class MyProperties {
     public static final String SELF_SETTING_PKG_NAME = "self_setting_pkg_name";
     public static final String SELF_SETTING = "self_setting";
     public static final String MODE_OFF = "off", MODE_NORMAL = "normal", MODE_SELF = "self";
+//    public static final String SET_VIEW = "set_view";
 
 
     public static void init(){
@@ -40,6 +41,7 @@ public class MyProperties {
                 PROP_FILE.getParentFile().mkdir();
                 setProperty(KEY_SWITCH, "false");
                 setProperty(TIME_SWITCH, "false");
+//                setProperty(SET_VIEW, "false");
                 setProperty(BEGIN_HOUR, "0");
                 setProperty(BEGIN_MIN, "0");
                 setProperty(END_HOUR, "0");
@@ -63,6 +65,7 @@ public class MyProperties {
 
         return true;
     }
+
 
     public static String getProperty(String key){
         return properties.getProperty(key);
