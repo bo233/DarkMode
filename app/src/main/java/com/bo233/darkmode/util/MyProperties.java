@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class MyProperties {
@@ -108,6 +110,59 @@ public class MyProperties {
 
         public static String getProperty(String key){
             return modeProp.getProperty(key);
+        }
+    }
+
+
+    public static class KillProperties{
+        private static Properties killProp;
+        private static File KILL_LIST_FILE;
+        private static final String killFilePath = "/sdcard/Android/data/com.bo233.darkmode/kill_list.ini";
+        private static final String killComment = "This is kill list.";
+        public static final String KILL_ENABLE = "true", KILL_DISABLE = "false";
+
+        public static void init(){
+            if(killProp == null) {
+                killProp = new Properties();
+                KILL_LIST_FILE = new File(killFilePath);
+                try {
+                    killProp.load(new FileReader(KILL_LIST_FILE));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (!KILL_LIST_FILE.exists()) {
+                    KILL_LIST_FILE.getParentFile().mkdir();
+                }
+            }
+        }
+
+        public static boolean setProperty(String key, String value){
+//        boolean isSuccessful = true;
+            killProp.setProperty(key, value);
+            try {
+                killProp.store(new FileOutputStream(KILL_LIST_FILE), killComment);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        public static String getProperty(String key){
+            return killProp.getProperty(key);
+        }
+
+        // 将文件中值为KILL_ENABLE的文件选出来
+        public static List<String> traverseProperty(){
+            List<String> pkgs = new ArrayList<>();
+
+            for (String key : killProp.stringPropertyNames()) {
+                if(getProperty(key).equals(KILL_ENABLE))
+                    pkgs.add(key);
+            }
+
+            return pkgs;
         }
     }
 }

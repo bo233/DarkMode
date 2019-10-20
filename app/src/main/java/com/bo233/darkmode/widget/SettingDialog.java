@@ -96,10 +96,10 @@ public class SettingDialog {
 //                        Log.d("hhh233", choice+"");
                         switch (choice){
                             case 0: //kill
-                                AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_ADD);
+                                AppHelper.modifyKillPkgNames(pkgName, AppHelper.UPDATE_ADD);
                                 break;
                             case 1: //don't kill
-                                AppHelper.updateKillPkgNames(pkgName, AppHelper.UPDATE_REMOVE);
+                                AppHelper.modifyKillPkgNames(pkgName, AppHelper.UPDATE_REMOVE);
                                 break;
                             default:
                                 break;

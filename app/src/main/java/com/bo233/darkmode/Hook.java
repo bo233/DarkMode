@@ -79,7 +79,7 @@ public class Hook implements IXposedHookLoadPackage {
     private void hookJudge(ClassLoader loader, String pkgName){
 //        Log.d("hookJudge", pkgName+":"+MyProperties.ModeProperties.getProperty(pkgName));
 //        if(setViewFlag)
-            hookNightModeSwitch(loader);
+//            hookNightModeSwitch(loader);
         if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
             return;
 

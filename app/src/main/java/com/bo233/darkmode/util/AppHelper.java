@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 
 import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
+import com.bo233.darkmode.util.MyProperties.KillProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,16 +46,22 @@ public class AppHelper {
     }
 
     public static List<String> getKillPkgNames(){
+        KillProperties.init();
+        killPkgNames = KillProperties.traverseProperty();
         return killPkgNames;
     }
 
-    public static void updateKillPkgNames( String pkgName, int flag){
+    public static void modifyKillPkgNames(String pkgName, int flag){
+        KillProperties.init();
+
         if(flag == UPDATE_ADD) {
             killPkgNames.add(pkgName);
+            KillProperties.setProperty(pkgName,KillProperties.KILL_ENABLE);
 //            Log.d("AppHelper", s+flag);
         }
         else if(flag == UPDATE_REMOVE){
             killPkgNames.remove(pkgName);
+            KillProperties.setProperty(pkgName,KillProperties.KILL_DISABLE);
 //            Log.d("AppHelper", s+flag);
         }
     }
