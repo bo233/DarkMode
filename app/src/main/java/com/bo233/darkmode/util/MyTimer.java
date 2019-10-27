@@ -14,12 +14,12 @@ import static android.content.Context.ALARM_SERVICE;
 
 public class MyTimer {
 //    private MyProperties properties;
-    private AlarmManager beginAlarmManager, endAlarmManager;
-    private Context context;
+    private static AlarmManager alarmManager;
+    private static Context context;
     private static int mBeginHour, mBeginMin, mEndHour, mEndMin;
-    private static Calendar beginTime, endTime;
-    private Intent beginIntent, endIntent;
-    private PendingIntent beginPendingIntent, endPendingIntent;
+    private static Calendar beginTime, endTime, lightBeginTime, lightEndTime;
+    private static Intent beginIntent, endIntent, lightBeginIntent, lightEndIntent;
+    private static PendingIntent beginPendingIntent, endPendingIntent, lightBeginPendingIntent, lightEndPendingIntent;
 
     public static final String BEGIN_HOUR = "beginning_hour";
     public static final String BEGIN_MIN = "beginning_min";
@@ -29,33 +29,41 @@ public class MyTimer {
     public MyTimer(Context c){
         context = c;
 //        properties = new MyProperties(MyProperties.SETTINGPATH);
-        beginAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
+        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 //        beginAlarmManager.setTimeZone("GMT+08:00");
-        endAlarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE); //?????????
+//        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 //        endAlarmManager.setTimeZone("GMT+08:00");
         beginTime = Calendar.getInstance();
         endTime = Calendar.getInstance();
+        lightBeginTime = Calendar.getInstance();
+        lightEndTime = Calendar.getInstance();
+
         beginIntent = new Intent(context, MyBroadcastReceiver.class).setAction("beginAlarm");
         endIntent = new Intent(context, MyBroadcastReceiver.class).setAction("endAlarm");
+        lightBeginIntent = new Intent(context, MyBroadcastReceiver.class).setAction("lightSensorOn");
+        lightEndIntent = new Intent(context, MyBroadcastReceiver.class).setAction("lightSensorOff");
+
         beginPendingIntent = PendingIntent.getBroadcast(context, 0, beginIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         endPendingIntent = PendingIntent.getBroadcast(context, 0, endIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-        updateTime(); //注意增加异常判断和处理
+        lightBeginPendingIntent = PendingIntent.getBroadcast(context, 0,
+                lightBeginIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        lightEndPendingIntent = PendingIntent.getBroadcast(context, 0,
+                lightEndIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//        updateTime();
 
     }
 
     /**
-     * 设置并启用闹钟
+     * 设置并启用按时间切换的闹钟
      */
-    public void start(){
+    public static void startTimeAlarm(){
 //        if(updateTime())
 //            return false;
         updateTime();
 
-
-
-        beginAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, beginTime.getTimeInMillis(),
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, beginTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, beginPendingIntent);
-        endAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, endTime.getTimeInMillis(),
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, endTime.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, endPendingIntent);
 
         Log.d("MyBroadcaster", "sent");
@@ -64,15 +72,29 @@ public class MyTimer {
     }
 
     /**
-     *取消已设定的闹钟
+     *取消已设定的按时间切换的闹钟
      */
-    public void cancel(){
-        beginAlarmManager.cancel(beginPendingIntent);
-        endAlarmManager.cancel(endPendingIntent);
-        Log.d("MyBroadcaster", "cancel");
+    public static void cancelTimeAlarm(){
+        alarmManager.cancel(beginPendingIntent);
+        alarmManager.cancel(endPendingIntent);
+        Log.d("MyBroadcaster", "cancelTimeAlarm");
     }
 
-    public String getStringTime(){ // need modify
+    public static void startLightAlarm(){
+        updateTime();
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, lightBeginTime.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, lightBeginPendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, lightEndTime.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, lightEndPendingIntent);
+    }
+
+    public static void cancelLightAlarm(){
+        alarmManager.cancel(lightBeginPendingIntent);
+        alarmManager.cancel(lightEndPendingIntent);
+    }
+
+    public static String getStringTime(){
         updateTime();
         String s = new SimpleDateFormat("HH:mm", Locale.CHINA).format(beginTime.getTime()) + " - "+ new SimpleDateFormat("HH:mm", Locale.CHINA).format(endTime.getTime());
         return s;
@@ -81,7 +103,7 @@ public class MyTimer {
     /**
      * 从ini文件中读取设定的时间
      */
-    private void updateTime(){
+    private static void updateTime(){
         try{
             mBeginHour = Integer.parseInt(MyProperties.getProperty(BEGIN_HOUR).trim());
             mBeginMin = Integer.parseInt(MyProperties.getProperty(BEGIN_MIN).trim());
@@ -97,6 +119,11 @@ public class MyTimer {
         endTime.set(Calendar.HOUR_OF_DAY, mEndHour);
         endTime.set(Calendar.MINUTE, mEndMin);
         endTime.set(Calendar.SECOND, 0);
+
+        lightBeginTime.setTime(beginTime.getTime());
+        lightBeginTime.add(Calendar.MINUTE, -10);
+        lightEndTime.setTime(endTime.getTime());
+        lightEndTime.add(Calendar.MINUTE, 10);
 
     }
 }

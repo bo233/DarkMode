@@ -15,13 +15,23 @@ import java.lang.reflect.Method;
 public class MyBroadcastReceiver extends BroadcastReceiver {
 //    private final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 //    private MyProperties properties ;
+    private static LightSensorUtils mLightSensorUtils;
+
     public MyBroadcastReceiver(){
         super();
 //        properties = new MyProperties(MyProperties.SETTINGPATH);
         MyProperties.init();
+        mLightSensorUtils = LightSensorUtils.getInstance();
+//        mLightSensorUtils.init(context);
     }
+
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        if(!mLightSensorUtils.isInit())
+            mLightSensorUtils.init(context);
+
         switch (intent.getAction()) {
             case "beginAlarm":
                 MyProperties.setProperty(MyProperties.KEY_SWITCH, "true");
@@ -37,6 +47,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 Log.d("myReceiver", "setNightModeView");
                 collapseStatusBar(context);
                 MyProperties.setProperty(MyProperties.SELF_SETTING, "true");
+                break;
+            case "lightSensorOn":
+                mLightSensorUtils.registerSensor();
+                break;
+            case "lightSensorOff":
+                mLightSensorUtils.unRegisterSensor();
                 break;
         }
     }

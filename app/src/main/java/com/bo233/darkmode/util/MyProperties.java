@@ -27,6 +27,7 @@ public class MyProperties {
     public static final String SELF_SETTING_PKG_NAME = "self_setting_pkg_name";
     public static final String SELF_SETTING = "self_setting";
     public static final String MODE_OFF = "off", MODE_NORMAL = "normal", MODE_SELF = "self";
+    public static final String LIGHT_SENSOR = "light_sensor";
 //    public static final String SET_VIEW = "set_view";
 
 
@@ -48,9 +49,13 @@ public class MyProperties {
                 setProperty(BEGIN_MIN, "0");
                 setProperty(END_HOUR, "0");
                 setProperty(END_MIN, "0");
+                setProperty(LIGHT_SENSOR, "false");
             }
         }
+
         ModeProperties.init();
+        KillProperties.init();
+
 
     }
 

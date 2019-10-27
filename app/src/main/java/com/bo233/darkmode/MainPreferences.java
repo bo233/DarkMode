@@ -25,6 +25,7 @@ public class MainPreferences extends PreferenceFragment {
     private CheckBoxPreference openPreference;
     private CheckBoxPreference setByAppPreference;
     private CheckBoxPreference timePreference;
+    private CheckBoxPreference lightSensorPreference;
 //    private MyProperties properties;
     private MyTimer timer;
 
@@ -35,6 +36,7 @@ public class MainPreferences extends PreferenceFragment {
         openPreference = (CheckBoxPreference) findPreference("key_switch");
         setByAppPreference = (CheckBoxPreference) findPreference("setting_by_apps");
         timePreference = (CheckBoxPreference) findPreference("time_switch");
+        lightSensorPreference = (CheckBoxPreference) findPreference("switch_by_light_sensor");
 //        properties = new MyProperties(MyProperties.SETTINGPATH);
 
         timer = new MyTimer(getActivity());
@@ -66,21 +68,44 @@ public class MainPreferences extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean timeSwitch = (boolean)newValue;
-                MyProperties.setProperty(MyProperties.TIME_SWITCH,timeSwitch+"");
+                MyProperties.setProperty(MyProperties.TIME_SWITCH, timeSwitch+"");
 
 
                 if(timeSwitch) {
                     askAutoSwitchTime();
 //                    timePreference.setSummary("勾选后设定时间段，当前的时间段为"+timer.getStringTime());
-                    timer.start();
-
+                    if("true".equals(MyProperties.getProperty(MyProperties.LIGHT_SENSOR))){
+                        timer.cancelLightAlarm();
+                        timer.startLightAlarm();
+                    }
+                    timer.startTimeAlarm();
                 }
                 else{
 //                    timePreference.setSummary("勾选后设定时间段");
-                    timer.cancel();
+                    timer.cancelTimeAlarm();
                 }
 
                 return true;
+            }
+        });
+
+        lightSensorPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                String s = MyProperties.getProperty(MyProperties.TIME_SWITCH);
+
+                if("true".equals(s)) {
+                    boolean b = (boolean) o;
+                    MyProperties.setProperty(MyProperties.LIGHT_SENSOR, b + "");
+                    timer.cancelTimeAlarm();
+                    timer.startLightAlarm();
+
+                    return true;
+                }
+                else{
+                    Toast.makeText(getActivity(),"请先开启定时开关",Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
         });
 

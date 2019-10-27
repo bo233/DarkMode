@@ -23,6 +23,11 @@
         android:key="setting_by_apps"
         android:title="自定义设置"
         android:summary="针对不同APP进行设置"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="switch_by_light_sensor"
+            android:summary="在设定的开始时间前后十分钟之内，根据环境光的强弱自动开启夜间模式，而非在设定时间到达时切换。\n开启后可能导致耗电增大"
+            android:title="根据环境光自动切换" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="其它">

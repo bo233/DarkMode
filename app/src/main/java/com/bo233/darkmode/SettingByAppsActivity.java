@@ -1,6 +1,5 @@
 package com.bo233.darkmode;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,16 +9,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.bo233.darkmode.util.MyFile;
-import com.bo233.darkmode.widget.SettingDialog;
 
 public class SettingByAppsActivity extends AppCompatActivity {
 
     private LinearLayout toolBar, singleToolBar;
     private Button modeSet, killSet, cancel;
-    private CheckBox multiChoiceBox;
+    private CheckBox multiCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +28,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
         modeSet = findViewById(R.id.mode_btn);
         killSet = findViewById(R.id.killer_btn);
         cancel = findViewById(R.id.cancel_btn);
-//        multiChoiceBox = findViewById(R.id.multi_choice_box);
+        multiCheckBox = findViewById(R.id.multi_check_box);
 
         modeSet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +48,9 @@ public class SettingByAppsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 toolBar.setVisibility(View.GONE);
-//                if(multiChoiceBox==null)
-//                    multiChoiceBox = findViewById(R.id.multi_choice_box);
-//                multiChoiceBox.setVisibility(View.GONE);
+                if(multiCheckBox==null)
+                    multiCheckBox = findViewById(R.id.multi_check_box);
+                multiCheckBox.setVisibility(View.GONE);
             }
         });
 
@@ -97,9 +94,9 @@ public class SettingByAppsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case 5: //批量操作
                 toolBar.setVisibility(View.VISIBLE);
-//                if(multiChoiceBox==null)
-//                    multiChoiceBox = findViewById(R.id.multi_choice_box);
-//                multiChoiceBox.setVisibility(View.VISIBLE);
+                if(multiCheckBox==null)
+                    multiCheckBox = findViewById(R.id.multi_check_box);
+                multiCheckBox.setVisibility(View.VISIBLE);
                 break;
             case 6: //帮助
                 break;

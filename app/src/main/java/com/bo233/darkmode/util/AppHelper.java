@@ -100,6 +100,7 @@ public class AppHelper {
                 appList.get(itemPosition).darkMode = 0;
             else if(mode.equals(MyProperties.MODE_SELF))
                 appList.get(itemPosition).darkMode = 2;
+
             adapter.notifyDataSetChanged();
             AppHelper.itemPosition = -1;
             AppHelper.appList = null;
@@ -107,7 +108,20 @@ public class AppHelper {
         }
     }
 
+    public static void updateAdapterByKillSet(){
+        if(AppHelper.itemPosition != -1 && AppHelper.appList != null && AppHelper.adapter != null){
+            String kill = KillProperties.getProperty(appList.get(itemPosition).pkgName);
+            if(kill == null || kill.equals(KillProperties.KILL_DISABLE))
+                appList.get(itemPosition).killMode = 0;
+            else
+                appList.get(itemPosition).killMode = 1;
 
+            adapter.notifyDataSetChanged();
+            AppHelper.itemPosition = -1;
+            AppHelper.appList = null;
+            AppHelper.adapter = null;
+        }
+    }
 
     /**
      * 获取应用信息列表
@@ -137,6 +151,9 @@ public class AppHelper {
                     else if(mode.equals(MyProperties.MODE_SELF))
                         info.darkMode = 2;
 
+                    String killMode = MyProperties.KillProperties.getProperty(info.pkgName);
+                    info.killMode = "true".equals(killMode) ? 1 : 0;
+
                     appList.add(info);
                 }
             } else {
@@ -156,6 +173,9 @@ public class AppHelper {
                         info.darkMode = 0;
                     else if(mode.equals(MyProperties.MODE_SELF))
                         info.darkMode = 2;
+
+                    String killMode = MyProperties.KillProperties.getProperty(info.pkgName);
+                    info.killMode = "true".equals(killMode) ? 1 : 0;
 
                     appList.add(info);
                 }

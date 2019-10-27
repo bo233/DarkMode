@@ -65,6 +65,7 @@ public class AppAdapter extends BaseAdapter {
         holder.appName.setText(appInfo.appName);
         holder.pkgName.setText(appInfo.pkgName);
         holder.modeState.setText("当前模式："+(appInfo.darkMode==0?"关闭":(appInfo.darkMode==1?"普通模式":"自带夜间模式")));
+        holder.killState.setText("自动关闭后台："+(appInfo.killMode==0?"否":"是"));
 
         return convertView;
     }

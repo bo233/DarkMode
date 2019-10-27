@@ -104,7 +104,7 @@ public class SettingDialog {
                             default:
                                 break;
                         }
-//                        AppHelper.updateAdapterByModeSet();
+                        AppHelper.updateAdapterByKillSet();
                         dialog.dismiss();
                     }
                 });
