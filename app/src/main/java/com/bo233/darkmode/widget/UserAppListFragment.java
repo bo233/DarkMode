@@ -23,6 +23,7 @@ import static com.bo233.darkmode.util.AppHelper.getAppList;
 
 public class UserAppListFragment extends ListFragment {
     private ArrayList<AppInfo> appList = new ArrayList<>();
+    private ListView listView;
 //    private ArrayList<AppInfo> systemAppList = new ArrayList<>();
     private int typeOfApps = AppHelper.USER_APP_LIST;
     AppAdapter adapter;
@@ -39,7 +40,12 @@ public class UserAppListFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = inflater.inflate(android.R.layout.simple_list_item_multiple_choice,container,false);
+        listView = getListView();
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+//        return super.onCreateView(inflater, container, savedInstanceState);
+
+        return v;
     }
 
     @Override

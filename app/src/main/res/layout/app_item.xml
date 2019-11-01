@@ -15,8 +15,9 @@
             android:layout_height="@android:dimen/app_icon_size"
             android:layout_alignParentLeft="true" />
 
+<!--        android:layout_width="230dp"-->
         <LinearLayout
-            android:layout_width="230dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:layout_toRightOf="@id/app_icon"
@@ -33,25 +34,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip" />
             <!--<LinearLayout-->
-                <!--android:id="@+id/single_tool_bar"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
+            <!--android:id="@+id/single_tool_bar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal">-->
 
-                <!--<Button-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="模式设置" />-->
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="模式设置" />-->
 
-                <!--<Button-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="强杀后台" />-->
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="强杀后台" />-->
 
-                <!--<Button-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="夜间按钮" />-->
+            <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="夜间按钮" />-->
 
 
             <!--</LinearLayout>-->
@@ -61,7 +62,8 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:orientation="vertical">
 
             <TextView
@@ -72,17 +74,19 @@
             <TextView
                 android:id="@+id/kill_mode"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip" />
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/multi_check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/multi_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:visibility="gone" />
 
 
 </RelativeLayout>
