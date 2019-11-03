@@ -37,23 +37,33 @@ public class UserAppListFragment extends ListFragment {
         setListAdapter(adapter);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(android.R.layout.simple_list_item_multiple_choice,container,false);
-        listView = getListView();
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//        return super.onCreateView(inflater, container, savedInstanceState);
-
-        return v;
-    }
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        View v = inflater.inflate(android.R.layout.simple_list_item_multiple_choice,container,false);
+//        listView = getListView();
+//        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+////        return super.onCreateView(inflater, container, savedInstanceState);
+//
+//        return v;
+//    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // 启动所选应用
 //        startActivity(appList.get(position).appIntent);
-        SingleSettingDialog dialog = new SingleSettingDialog(getActivity(),appList.get(position).appName, appList.get(position).pkgName);
-        dialog.show();
+        if(AppAdapter.multiChoiceMode){
+//            appList.get(position)
+            if(adapter.selectedItems.contains((long)position))
+                adapter.selectedItems.remove((long)position);
+            else
+                adapter.selectedItems.add((long)position);
+
+        }
+        else {
+            SingleSettingDialog dialog = new SingleSettingDialog(getActivity(), appList.get(position).appName, appList.get(position).pkgName);
+            dialog.show();
+        }
         //更新appList中的mode
         AppHelper.setUpdateAdapterParam(adapter, appList, position);
 //        String mode = MyProperties.ModeProperties.getProperty(appList.get(position).pkgName);
@@ -63,8 +73,9 @@ public class UserAppListFragment extends ListFragment {
 //            appList.get(position).darkMode = 0;
 //        else if(mode.equals(MyProperties.MODE_OFF))
 //            appList.get(position).darkMode = 2;
-//        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
+
 
 
 }

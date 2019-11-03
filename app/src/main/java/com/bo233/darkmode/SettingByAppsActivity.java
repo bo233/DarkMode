@@ -10,13 +10,14 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
+import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.util.MyFile;
 
 public class SettingByAppsActivity extends AppCompatActivity {
 
     private LinearLayout toolBar, singleToolBar;
     private Button modeSet, killSet, cancel;
-    private CheckBox multiCheckBox;
+//    private CheckBox multiCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class SettingByAppsActivity extends AppCompatActivity {
         modeSet = findViewById(R.id.mode_btn);
         killSet = findViewById(R.id.killer_btn);
         cancel = findViewById(R.id.cancel_btn);
-        multiCheckBox = findViewById(R.id.multi_check_box);
+//        multiCheckBox = findViewById(R.id.multi_check_box);
 
         modeSet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,9 +49,10 @@ public class SettingByAppsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 toolBar.setVisibility(View.GONE);
-                if(multiCheckBox==null)
-                    multiCheckBox = findViewById(R.id.multi_check_box);
-                multiCheckBox.setVisibility(View.GONE);
+//                if(multiCheckBox==null)
+//                    multiCheckBox = findViewById(R.id.multi_check_box);
+//                multiCheckBox.setVisibility(View.GONE);
+                AppAdapter.multiChoiceMode = false;
             }
         });
 
@@ -94,9 +96,10 @@ public class SettingByAppsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case 5: //批量操作
                 toolBar.setVisibility(View.VISIBLE);
-                if(multiCheckBox==null)
-                    multiCheckBox = findViewById(R.id.multi_check_box);
-                multiCheckBox.setVisibility(View.VISIBLE);
+                AppAdapter.multiChoiceMode = true;
+//                if(multiCheckBox==null)
+//                    multiCheckBox = findViewById(R.id.multi_check_box);
+//                multiCheckBox.setVisibility(View.VISIBLE);
                 break;
             case 6: //帮助
                 break;
