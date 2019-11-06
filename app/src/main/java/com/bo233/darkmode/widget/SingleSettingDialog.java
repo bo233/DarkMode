@@ -33,7 +33,7 @@ public class SingleSettingDialog extends AlertDialog{
         cancel = findViewById(R.id.dialog_btn_cancel);
         modeSet = findViewById(R.id.dialog_btn_mode_setting);
         killSet = findViewById(R.id.dialog_btn_killer_setting);
-        selfMode = findViewById(R.id.dialog_btn_self_mode);
+//        selfMode = findViewById(R.id.dialog_btn_self_mode);
         title = findViewById(R.id.dialog_title);
 
         title.setText(appName);
@@ -62,17 +62,17 @@ public class SingleSettingDialog extends AlertDialog{
             }
         });
 
-        selfMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SettingDialog.showSelfModeHelpDialog(context);
-                new SelfSettingNotification(context);
-                SingleSettingDialog.this.dismiss();
-                MyProp.setProp(MyProp.SELF_SETTING_PKG_NAME, pkgName);
-//                MyProp.setProp(MyProp.SELF_SETTING, "true");
-                AppKiller.kill(pkgName);
-            }
-        });
+//        selfMode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SettingDialog.showSelfModeHelpDialog(context);
+//                new SelfSettingNotification(context);
+//                SingleSettingDialog.this.dismiss();
+//                MyProp.setProp(MyProp.SELF_SETTING_PKG_NAME, pkgName);
+////                MyProp.setProp(MyProp.SELF_SETTING, "true");
+//                AppKiller.kill(pkgName);
+//            }
+//        });
 
 
     }

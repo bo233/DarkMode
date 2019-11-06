@@ -37,7 +37,7 @@
         </Preference>
         <Preference
             android:title="关于"
-            android:summary="第一次开发安卓应用，多多指教(*¯︶¯*)">
+            android:summary="版本0.1.0\n第一次开发安卓应用，请多指教(*¯︶¯*)">
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

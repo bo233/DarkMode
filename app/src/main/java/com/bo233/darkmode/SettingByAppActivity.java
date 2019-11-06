@@ -91,7 +91,7 @@ public class SettingByAppActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, 5, 1, getString(R.string.bulk_process));
-        menu.add(0, 6, 2, getString(R.string.help));
+//        menu.add(0, 6, 2, getString(R.string.help));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -106,8 +106,8 @@ public class SettingByAppActivity extends AppCompatActivity {
 //                    multiCheckBox = findViewById(R.id.multi_check_box);
 //                multiCheckBox.setVisibility(View.VISIBLE);
                 break;
-            case 6: //帮助
-                break;
+//            case 6: //帮助
+//                break;
             default:
                 break;
         }
