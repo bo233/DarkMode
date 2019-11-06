@@ -14,6 +14,8 @@ public class AppKiller {
 
     private static Process process;
 
+    private AppKiller(){}
+
     /**
      * 结束进程,执行操作调用即可
      */

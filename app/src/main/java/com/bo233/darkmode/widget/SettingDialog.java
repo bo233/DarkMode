@@ -14,7 +14,7 @@ public class SettingDialog {
                 context.getString(R.string.off_mode)};
 
         AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
-        radioDialog.setTitle(R.string.mode_set_title);
+        radioDialog.setTitle(R.string.mode_set);
 
     /*
         设置item 不能用setMessage()
@@ -66,12 +66,65 @@ public class SettingDialog {
         radioDialog.create().show();
     }
 
+    public static void showMultiSetModeDialog(final Context context){
+        final String radioItems[] = new String[]{context.getString(R.string.normal_mode),
+                context.getString(R.string.off_mode)};
+
+        AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
+        radioDialog.setTitle(R.string.mode_set);
+
+    /*
+        设置item 不能用setMessage()
+        用setSingleChoiceItems
+        items : radioItems[] -> 单选选项数组
+        checkItem : 0 -> 默认选中的item
+        listener -> 回调接口
+    */
+        radioDialog.setSingleChoiceItems(radioItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                Toast.makeText(context,radioItems[which], Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        radioDialog.setPositiveButton(R.string.commit,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog)dialog).getListView();
+                        int choice = lw.getCheckedItemPosition();
+                        switch (choice){
+                            case 0: //normal mode
+                                AppHelper.setMode(AppHelper.multiChoicePkgName, AppHelper.MODE_NORMAL);
+                                break;
+                            case 1: //off
+                                AppHelper.setMode(AppHelper.multiChoicePkgName, AppHelper.MODE_OFF);
+                                break;
+                            default:
+                                break;
+                        }
+                        AppHelper.updateAdapterByModeSet();
+                        dialog.dismiss();
+                    }
+                });
+
+        radioDialog.setNegativeButton(R.string.cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        radioDialog.create().show();
+    }
 
     public static void showSetKillDialog(final Context context, final String pkgName){
         final String radioItems[] = new String[]{context.getString(R.string.kill_mode), context.getString(R.string.dont_kill_mode)};
 
         AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
-        radioDialog.setTitle(R.string.kill_set_title);
+        radioDialog.setTitle(R.string.kill_set);
 
     /*
         设置item 不能用setMessage()
@@ -96,10 +149,10 @@ public class SettingDialog {
 //                        Log.d("hhh233", choice+"");
                         switch (choice){
                             case 0: //kill
-                                AppHelper.modifyKillPkgNames(pkgName, AppHelper.UPDATE_ADD);
+                                AppHelper.setKillPkgNames(pkgName, AppHelper.ADD);
                                 break;
                             case 1: //don't kill
-                                AppHelper.modifyKillPkgNames(pkgName, AppHelper.UPDATE_REMOVE);
+                                AppHelper.setKillPkgNames(pkgName, AppHelper.REMOVE);
                                 break;
                             default:
                                 break;
@@ -119,6 +172,60 @@ public class SettingDialog {
 
         radioDialog.create().show();
     }
+
+    public static void showMultiSetKillDialog(final Context context){
+        final String radioItems[] = new String[]{context.getString(R.string.kill_mode), context.getString(R.string.dont_kill_mode)};
+
+        AlertDialog.Builder radioDialog = new AlertDialog.Builder(context);
+        radioDialog.setTitle(R.string.kill_set);
+
+    /*
+        设置item 不能用setMessage()
+        用setSingleChoiceItems
+        items : radioItems[] -> 单选选项数组
+        checkItem : 0 -> 默认选中的item
+        listener -> 回调接口
+    */
+        radioDialog.setSingleChoiceItems(radioItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                Toast.makeText(context,radioItems[which], Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        radioDialog.setPositiveButton(R.string.commit,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView lw = ((AlertDialog)dialog).getListView();
+                        int choice = lw.getCheckedItemPosition();
+//                        Log.d("hhh233", choice+"");
+                        switch (choice){
+                            case 0: //kill
+                                AppHelper.setKillPkgNames(AppHelper.multiChoicePkgName, AppHelper.ADD);
+                                break;
+                            case 1: //don't kill
+                                AppHelper.setKillPkgNames(AppHelper.multiChoicePkgName, AppHelper.REMOVE);
+                                break;
+                            default:
+                                break;
+                        }
+                        AppHelper.updateAdapterByKillSet();
+                        dialog.dismiss();
+                    }
+                });
+
+        radioDialog.setNegativeButton(R.string.cancel,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        radioDialog.create().show();
+    }
+
 
 
     public static void showSelfModeHelpDialog(final Context context){

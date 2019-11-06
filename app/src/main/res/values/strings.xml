@@ -5,12 +5,12 @@
     <string name="time_set_summary">勾选后设定时间段，当前的时间段为</string>
     <string name="restart_app_remind">重新启动所有应用以生效</string>
     <string name="dont_cancel">请勿取消</string>
-    <string name="mode_set_title">模式设置</string>
-    <string name="kill_set_title">强杀后台</string>
+    <string name="mode_set">模式设置</string>
+    <string name="kill_set">自动关闭后台</string>
     <string name="normal_mode">普通模式</string>
     <string name="self_mode">自带夜间模式</string>
     <string name="off_mode">关闭</string>
-    <string name="kill_mode">切换夜间模式时强行关闭后台</string>
+    <string name="kill_mode">切换夜间模式时自动关闭后台</string>
     <string name="dont_kill_mode">切换夜间模式时不关闭后台</string>
     <string name="commit">确认</string>
     <string name="cancel">取消</string>
@@ -26,4 +26,5 @@
     <string name="notification_start_setting">开始设置</string>
     <string name="notification_title">自带模式设置</string>
     <string name="notification_summary">切换到APP设置页后，点击下方“开始设置”按钮，并点击APP内切换夜间模式的开关</string>
+    <string name="light_sensor_warning">请先开启定时开关</string>
 </resources>

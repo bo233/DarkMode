@@ -8,10 +8,13 @@ import android.support.annotation.NonNull;
 
 import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
-import com.bo233.darkmode.util.MyProperties.KillProperties;
+import com.bo233.darkmode.util.MyProp.KillProp;
+import com.bo233.darkmode.util.MyProp.ModeProp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AppHelper {
     private static List<String> allPkgNames = new ArrayList<>();
@@ -20,12 +23,15 @@ public class AppHelper {
     private static List<PackageInfo> packages = new ArrayList<>();
 
     public static final int USER_APP_LIST = 0, SYSTEM_APP_LIST = 1;
-    public static final int UPDATE_ADD = 2, UPDATE_REMOVE = 3;
+    public static final int ADD = 2, REMOVE = 3;
     public static final int MODE_OFF = 4, MODE_NORMAL = 5, MODE_SELF = 6;
 
     private static int itemPosition = -1;
     private static AppAdapter adapter = null;
     private static ArrayList<AppInfo> appList = null;
+    public static List<String> multiChoicePkgName = new ArrayList<>();
+
+    private AppHelper(){}
 
     public static void setPackageManager(@NonNull Activity a){
         packageManager = a.getPackageManager();
@@ -46,22 +52,43 @@ public class AppHelper {
     }
 
     public static List<String> getKillPkgNames(){
-        KillProperties.init();
-        killPkgNames = KillProperties.traverseProperty();
+        KillProp.init();
+        killPkgNames = KillProp.traverseProp();
         return killPkgNames;
     }
 
-    public static void modifyKillPkgNames(String pkgName, int flag){
-        KillProperties.init();
+    public static void setKillPkgNames(String pkgName, int flag){
+        KillProp.init();
 
-        if(flag == UPDATE_ADD) {
+        if(flag == ADD) {
             killPkgNames.add(pkgName);
-            KillProperties.setProperty(pkgName,KillProperties.KILL_ENABLE);
+            KillProp.setProp(pkgName, KillProp.KILL_ENABLE);
 //            Log.d("AppHelper", s+flag);
         }
-        else if(flag == UPDATE_REMOVE){
+        else if(flag == REMOVE){
             killPkgNames.remove(pkgName);
-            KillProperties.setProperty(pkgName,KillProperties.KILL_DISABLE);
+            KillProp.setProp(pkgName, KillProp.KILL_DISABLE);
+//            Log.d("AppHelper", s+flag);
+        }
+    }
+
+    public static void setKillPkgNames(List<String> pkgNames, int flag){
+        KillProp.init();
+
+        if(flag == ADD) {
+            killPkgNames.addAll(pkgNames);
+            KillProp.setProp(pkgNames, KillProp.KILL_ENABLE);
+//            Log.d("AppHelper", s+flag);
+            // 查重
+            Set<String> set = new HashSet<>();
+            for(String name : killPkgNames)
+                set.add(name);
+            killPkgNames.clear();
+            killPkgNames.addAll(new ArrayList<>(set));
+        }
+        else if(flag == REMOVE){
+            killPkgNames.remove(pkgNames);
+            KillProp.setProp(pkgNames, KillProp.KILL_DISABLE);
 //            Log.d("AppHelper", s+flag);
         }
     }
@@ -69,13 +96,29 @@ public class AppHelper {
     public static void setMode(String pkgName, int flag){
         switch (flag){
             case MODE_OFF:
-                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_OFF);
+                MyProp.ModeProp.setProp(pkgName, MyProp.MODE_OFF);
                 break;
             case MODE_NORMAL:
-                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_NORMAL);
+                MyProp.ModeProp.setProp(pkgName, MyProp.MODE_NORMAL);
                 break;
             case MODE_SELF:
-                MyProperties.ModeProperties.setProperty(pkgName, MyProperties.MODE_SELF);
+                MyProp.ModeProp.setProp(pkgName, MyProp.MODE_SELF);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void setMode(List<String> pkgNames, int flag){
+        switch (flag){
+            case MODE_OFF:
+                MyProp.ModeProp.setProp(pkgNames, MyProp.MODE_OFF);
+                break;
+            case MODE_NORMAL:
+                ModeProp.setProp(pkgNames, MyProp.MODE_NORMAL);
+                break;
+            case MODE_SELF:
+                ModeProp.setProp(pkgNames, MyProp.MODE_SELF);
                 break;
             default:
                 break;
@@ -93,12 +136,12 @@ public class AppHelper {
 
     public static void updateAdapterByModeSet(){
         if(AppHelper.itemPosition != -1 && AppHelper.appList != null && AppHelper.adapter != null){
-            String mode = MyProperties.ModeProperties.getProperty(appList.get(itemPosition).pkgName);
-            if(mode == null || mode.equals(MyProperties.MODE_NORMAL))
+            String mode = ModeProp.getProp(appList.get(itemPosition).pkgName);
+            if(mode == null || mode.equals(MyProp.MODE_NORMAL))
                 appList.get(itemPosition).darkMode = 1;
-            else if(mode.equals(MyProperties.MODE_OFF))
+            else if(mode.equals(MyProp.MODE_OFF))
                 appList.get(itemPosition).darkMode = 0;
-            else if(mode.equals(MyProperties.MODE_SELF))
+            else if(mode.equals(MyProp.MODE_SELF))
                 appList.get(itemPosition).darkMode = 2;
 
             adapter.notifyDataSetChanged();
@@ -110,8 +153,8 @@ public class AppHelper {
 
     public static void updateAdapterByKillSet(){
         if(AppHelper.itemPosition != -1 && AppHelper.appList != null && AppHelper.adapter != null){
-            String kill = KillProperties.getProperty(appList.get(itemPosition).pkgName);
-            if(kill == null || kill.equals(KillProperties.KILL_DISABLE))
+            String kill = KillProp.getProp(appList.get(itemPosition).pkgName);
+            if(kill == null || kill.equals(KillProp.KILL_DISABLE))
                 appList.get(itemPosition).killMode = 0;
             else
                 appList.get(itemPosition).killMode = 1;
@@ -143,15 +186,15 @@ public class AppHelper {
                     info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
                     // 获取该应用安装包的Intent，用于启动该应用
 //                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
-                    String mode = MyProperties.ModeProperties.getProperty(info.pkgName);
-                    if(mode==null || mode.equals(MyProperties.MODE_NORMAL))
+                    String mode = MyProp.ModeProp.getProp(info.pkgName);
+                    if(mode==null || mode.equals(MyProp.MODE_NORMAL))
                         info.darkMode = 1;
-                    else if(mode.equals(MyProperties.MODE_OFF))
+                    else if(mode.equals(MyProp.MODE_OFF))
                         info.darkMode = 0;
-                    else if(mode.equals(MyProperties.MODE_SELF))
+                    else if(mode.equals(MyProp.MODE_SELF))
                         info.darkMode = 2;
 
-                    String killMode = MyProperties.KillProperties.getProperty(info.pkgName);
+                    String killMode = KillProp.getProp(info.pkgName);
                     info.killMode = "true".equals(killMode) ? 1 : 0;
 
                     appList.add(info);
@@ -166,15 +209,15 @@ public class AppHelper {
                     info.appIcon = packageInfo.applicationInfo.loadIcon(packageManager);
                     // 获取该应用安装包的Intent，用于启动该应用
 //                    info.appIntent = packageManager.getLaunchIntentForPackage(packageInfo.packageName);
-                    String mode = MyProperties.ModeProperties.getProperty(info.pkgName);
-                    if(mode==null || mode.equals(MyProperties.MODE_NORMAL))
+                    String mode = MyProp.ModeProp.getProp(info.pkgName);
+                    if(mode==null || mode.equals(MyProp.MODE_NORMAL))
                         info.darkMode = 1;
-                    else if(mode.equals(MyProperties.MODE_OFF))
+                    else if(mode.equals(MyProp.MODE_OFF))
                         info.darkMode = 0;
-                    else if(mode.equals(MyProperties.MODE_SELF))
+                    else if(mode.equals(MyProp.MODE_SELF))
                         info.darkMode = 2;
 
-                    String killMode = MyProperties.KillProperties.getProperty(info.pkgName);
+                    String killMode = KillProp.getProp(info.pkgName);
                     info.killMode = "true".equals(killMode) ? 1 : 0;
 
                     appList.add(info);

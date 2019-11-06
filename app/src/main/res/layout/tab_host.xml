@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="@string/mode_set_title" />
+            android:text="@string/mode_set" />
 
         <Button
             android:id="@+id/killer_btn"
@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="@string/kill_set_title" />
+            android:text="@string/kill_set" />
 
         <Button
             android:id="@+id/cancel_btn"

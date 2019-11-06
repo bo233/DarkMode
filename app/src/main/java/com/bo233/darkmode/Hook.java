@@ -1,7 +1,6 @@
 package com.bo233.darkmode;
 
 
-import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
@@ -10,9 +9,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
-import com.bo233.darkmode.util.MyProperties;
+import com.bo233.darkmode.util.MyProp;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -23,7 +21,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 //, IXposedHookInitPackageResources
 public class Hook implements IXposedHookLoadPackage {
-//    private MyProperties properties;
+//    private MyProp properties;
     private static final int textColor = 0xff808080;
     private static final int backgndColor = 0xff101010;
 //    public static ClassLoader staticClassLoader = null;
@@ -43,10 +41,10 @@ public class Hook implements IXposedHookLoadPackage {
         ClassLoader loader = loadPackageParam.classLoader;
         String pkgName = loadPackageParam.packageName;
 
-        MyProperties.init();
-//        setViewFlag = "true".equals(MyProperties.getProperty(MyProperties.SELF_SETTING));
+        MyProp.init();
+//        setViewFlag = "true".equals(MyProp.getProp(MyProp.SELF_SETTING));
 
-//        properties = new MyProperties(SETTINGPATH);
+//        properties = new MyProp(SETTINGPATH);
 
 
         //hook自身以检测模块是否激活
@@ -55,10 +53,10 @@ public class Hook implements IXposedHookLoadPackage {
                     "isModuleActive", XC_MethodReplacement.returnConstant(true));
         }
 
-//        if(MyProperties.getProperty(MyProperties.SELF_SETTING)!=null &&
-//                MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true"))
-//            if(MyProperties.getProperty(MyProperties.SELF_SETTING_PKG_NAME)!=null &&
-//                    MyProperties.getProperty(MyProperties.SELF_SETTING_PKG_NAME).equals(pkgName))
+//        if(MyProp.getProp(MyProp.SELF_SETTING)!=null &&
+//                MyProp.getProp(MyProp.SELF_SETTING).equals("true"))
+//            if(MyProp.getProp(MyProp.SELF_SETTING_PKG_NAME)!=null &&
+//                    MyProp.getProp(MyProp.SELF_SETTING_PKG_NAME).equals(pkgName))
 //                setClassLoader(loader);
 
 
@@ -77,27 +75,26 @@ public class Hook implements IXposedHookLoadPackage {
      * 通过包名来判断使用何种模式来hook
      */
     private void hookJudge(ClassLoader loader, String pkgName){
-//        Log.d("hookJudge", pkgName+":"+MyProperties.ModeProperties.getProperty(pkgName));
+//        Log.d("hookJudge", pkgName+":"+MyProp.ModeProp.getProp(pkgName));
 //        if(setViewFlag)
 //            hookNightModeSwitch(loader);
-        if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
+        if(MyProp.getProp("open")==null || MyProp.getProp("open").equals("false"))
             return;
 
 
-        if(MyProperties.ModeProperties.getProperty(pkgName)==null ||
-                MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_NORMAL))
+        if(MyProp.ModeProp.getProp(pkgName)==null ||
+                MyProp.ModeProp.getProp(pkgName).equals(MyProp.MODE_NORMAL))
             normalHookExec(loader, pkgName);
 
-        else if(MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_OFF))
+        else if(MyProp.ModeProp.getProp(pkgName).equals(MyProp.MODE_OFF))
             return;
 
-        else if(MyProperties.ModeProperties.getProperty(pkgName).equals(MyProperties.MODE_SELF))
+        else if(MyProp.ModeProp.getProp(pkgName).equals(MyProp.MODE_SELF))
             ; // TODO
     }
 
 
     private void normalHookExec(ClassLoader classLoader, String pkgName){
-
         try{
             hookText(classLoader);
             hookDrawColor(classLoader);
@@ -122,7 +119,7 @@ public class Hook implements IXposedHookLoadPackage {
                 "setTextColor", int.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                        if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null || MyProp.getProp("open").equals("false"))
 //                            return;
 
                         param.args[0] = textColor;
@@ -138,7 +135,7 @@ public class Hook implements IXposedHookLoadPackage {
                 "setTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                        if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null || MyProp.getProp("open").equals("false"))
 //                            return;
 
                         ColorStateList c = ColorStateList.valueOf(textColor);
@@ -155,7 +152,7 @@ public class Hook implements IXposedHookLoadPackage {
                 "setHintTextColor", int.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                        if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null || MyProp.getProp("open").equals("false"))
 //                            return;
 
                         param.args[0] = textColor;
@@ -170,7 +167,7 @@ public class Hook implements IXposedHookLoadPackage {
                 "setHintTextColor", ColorStateList.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                        if(MyProperties.getProperty("open")==null || MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null || MyProp.getProp("open").equals("false"))
 //                            return;
 
                         ColorStateList c = ColorStateList.valueOf(textColor);
@@ -191,7 +188,7 @@ public class Hook implements IXposedHookLoadPackage {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                     super.beforeHookedMethod(param);
-//                    if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                    if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                        return;
 
 //                    int curColor=(int)param.args[0];
@@ -218,7 +215,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
 
                         param.args[0] = backgndColor;
@@ -234,7 +231,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
 
                         param.args[0] = new ColorDrawable(backgndColor);
@@ -250,7 +247,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
 
                         param.args[0] = new ColorDrawable(backgndColor);
@@ -263,7 +260,7 @@ public class Hook implements IXposedHookLoadPackage {
 //                "setBackgroundResource", int.class, new XC_MethodHook() {
 //                    @Override
 //                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//                        if(properties.getProperty("open")==null||properties.getProperty("open").equals("false"))
+//                        if(properties.getProp("open")==null||properties.getProp("open").equals("false"))
 //                            return;
 //
 //                        param.args[0] = 0; //remove the background
@@ -287,7 +284,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
 //                        Log.d("hookCons", "hooked");
@@ -299,7 +296,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
 //                        Log.d("hookCons", "hooked");
@@ -311,7 +308,7 @@ public class Hook implements IXposedHookLoadPackage {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty("open")==null||MyProperties.getProperty("open").equals("false"))
+//                        if(MyProp.getProp("open")==null||MyProp.getProp("open").equals("false"))
 //                            return;
                         XposedHelpers.callMethod(param.thisObject, "setBackgroundColor", backgndColor);
 //                        Log.d("hookCons", "hooked");
@@ -329,12 +326,12 @@ public class Hook implements IXposedHookLoadPackage {
 //                    @Override
 //                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 //                        super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty(MyProperties.KEY_SWITCH)!=null &&
-//                                MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true")) {
+//                        if(MyProp.getProp(MyProp.KEY_SWITCH)!=null &&
+//                                MyProp.getProp(MyProp.SELF_SETTING).equals("true")) {
 //                            staticSwitchView = (View) param.thisObject;
 //                            Log.d("hookSwitch", "hooked dispatchTouchEvent");
 //                            Log.d("hookSwitch", staticSwitchView.toString());
-//                            MyProperties.setProperty(MyProperties.SELF_SETTING, "false");
+//                            MyProp.setProp(MyProp.SELF_SETTING, "false");
 //                        }
 //                    }
 //                });
@@ -345,12 +342,12 @@ public class Hook implements IXposedHookLoadPackage {
 //                    @Override
 //                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 //                        super.beforeHookedMethod(param);
-//                        if(MyProperties.getProperty(MyProperties.KEY_SWITCH)!=null &&
-//                                MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true")) {
+//                        if(MyProp.getProp(MyProp.KEY_SWITCH)!=null &&
+//                                MyProp.getProp(MyProp.SELF_SETTING).equals("true")) {
 //                            staticSwitchView = (View) param.thisObject;
 //                            Log.d("hookSwitch", "hooked performClick");
 //                            Log.d("hookSwitch", staticSwitchView.toString());
-//                            MyProperties.setProperty(MyProperties.SELF_SETTING, "false");
+//                            MyProp.setProp(MyProp.SELF_SETTING, "false");
 //                        }
 //                    }
 //                });
@@ -366,14 +363,14 @@ public class Hook implements IXposedHookLoadPackage {
                             @Override
                             public void onClick(View v) {
 //                                mTouchHandler.hookOnClickListener(v,mFilters);
-                                MyProperties.init();
+                                MyProp.init();
 
-                                if(MyProperties.getProperty(MyProperties.KEY_SWITCH)!=null &&
-                                        MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true")){
+                                if(MyProp.getProp(MyProp.KEY_SWITCH)!=null &&
+                                        MyProp.getProp(MyProp.SELF_SETTING).equals("true")){
                                     Log.d("hookSwitch", "hooked listener");
                                     if(v!=null)
                                         Log.d("hookSwitch", v.toString());
-                                    MyProperties.setProperty(MyProperties.SELF_SETTING,"false");
+                                    MyProp.setProp(MyProp.SELF_SETTING,"false");
                                 }
 
                                 if (listener==null){
@@ -395,14 +392,14 @@ public class Hook implements IXposedHookLoadPackage {
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
 
-                        MyProperties.init();
-                        if(MyProperties.getProperty(MyProperties.KEY_SWITCH)!=null &&
-                                MyProperties.getProperty(MyProperties.SELF_SETTING).equals("true")) {
+                        MyProp.init();
+                        if(MyProp.getProp(MyProp.KEY_SWITCH)!=null &&
+                                MyProp.getProp(MyProp.SELF_SETTING).equals("true")) {
                             View v = (View) param.thisObject; //处理v==null
                             Log.d("hookSwitch", "hooked View.dispatchTouchEvent");
                             if(v!=null)
                                 Log.d("hookSwitch", v.toString());
-                            MyProperties.setProperty(MyProperties.SELF_SETTING, "false");
+                            MyProp.setProp(MyProp.SELF_SETTING, "false");
                         }
                     }
         });
@@ -449,7 +446,7 @@ public class Hook implements IXposedHookLoadPackage {
 //                        @Override
 //                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 //                            super.beforeHookedMethod(param);
-////                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
+////                            if (MyProp.getProp("open") == null || MyProp.getProp("open").equals("false"))
 ////                                return;
 //
 //                            Log.d("hookCardView", "int");
@@ -462,7 +459,7 @@ public class Hook implements IXposedHookLoadPackage {
 //                        @Override
 //                        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 //                            super.beforeHookedMethod(param);
-////                            if (MyProperties.getProperty("open") == null || MyProperties.getProperty("open").equals("false"))
+////                            if (MyProp.getProp("open") == null || MyProp.getProp("open").equals("false"))
 ////                                return;
 //
 //                            ColorStateList c = ColorStateList.valueOf(backgndColor);

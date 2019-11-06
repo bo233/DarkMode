@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class MyProperties {
+public class MyProp {
     public static final String SETTINGPATH = "/sdcard/Android/data/com.bo233.darkmode/settings.ini";
 //    private String filePath;
     private static File PROP_FILE;
@@ -30,6 +30,7 @@ public class MyProperties {
     public static final String LIGHT_SENSOR = "light_sensor";
 //    public static final String SET_VIEW = "set_view";
 
+    private MyProp(){}
 
     public static void init(){
         if(properties == null) {
@@ -42,25 +43,25 @@ public class MyProperties {
             }
             if (!PROP_FILE.exists()) {
                 PROP_FILE.getParentFile().mkdir();
-                setProperty(KEY_SWITCH, "false");
-                setProperty(TIME_SWITCH, "false");
-//                setProperty(SET_VIEW, "false");
-                setProperty(BEGIN_HOUR, "0");
-                setProperty(BEGIN_MIN, "0");
-                setProperty(END_HOUR, "0");
-                setProperty(END_MIN, "0");
-                setProperty(LIGHT_SENSOR, "false");
+                setProp(KEY_SWITCH, "false");
+                setProp(TIME_SWITCH, "false");
+//                setProp(SET_VIEW, "false");
+                setProp(BEGIN_HOUR, "0");
+                setProp(BEGIN_MIN, "0");
+                setProp(END_HOUR, "0");
+                setProp(END_MIN, "0");
+                setProp(LIGHT_SENSOR, "false");
             }
         }
 
-        ModeProperties.init();
-        KillProperties.init();
+        ModeProp.init();
+        KillProp.init();
 
 
     }
 
 
-    public static boolean setProperty(String key, String value){
+    public static boolean setProp(String key, String value){
 //        boolean isSuccessful = true;
         properties.setProperty(key, value);
         try {
@@ -74,12 +75,12 @@ public class MyProperties {
     }
 
 
-    public static String getProperty(String key){
+    public static String getProp(String key){
         return properties.getProperty(key);
     }
 
 
-    public static class ModeProperties{
+    public static class ModeProp {
         private static Properties modeProp;
         private static File MODE_LIST_FILE;
         private static final String modeFilePath = "/sdcard/Android/data/com.bo233.darkmode/mode_list.ini";
@@ -100,7 +101,7 @@ public class MyProperties {
             }
         }
 
-        public static boolean setProperty(String key, String value){
+        public static boolean setProp(String key, String value){
 //        boolean isSuccessful = true;
             modeProp.setProperty(key, value);
             try {
@@ -113,13 +114,27 @@ public class MyProperties {
             return true;
         }
 
-        public static String getProperty(String key){
+        public static boolean setProp(List<String> pkgNames, String value){
+//        boolean isSuccessful = true;
+            for(String name : pkgNames)
+                modeProp.setProperty(name, value);
+            try {
+                modeProp.store(new FileOutputStream(MODE_LIST_FILE),modeComment);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        public static String getProp(String key){
             return modeProp.getProperty(key);
         }
     }
 
 
-    public static class KillProperties{
+    public static class KillProp {
         private static Properties killProp;
         private static File KILL_LIST_FILE;
         private static final String killFilePath = "/sdcard/Android/data/com.bo233.darkmode/kill_list.ini";
@@ -141,7 +156,7 @@ public class MyProperties {
             }
         }
 
-        public static boolean setProperty(String key, String value){
+        public static boolean setProp(String key, String value){
 //        boolean isSuccessful = true;
             killProp.setProperty(key, value);
             try {
@@ -154,16 +169,29 @@ public class MyProperties {
             return true;
         }
 
-        public static String getProperty(String key){
+        public static boolean setProp(List<String> pkgNames, String value){
+            for(String name : pkgNames)
+                killProp.setProperty(name, value);
+            try {
+                killProp.store(new FileOutputStream(KILL_LIST_FILE), killComment);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        public static String getProp(String key){
             return killProp.getProperty(key);
         }
 
         // 将文件中值为KILL_ENABLE的文件选出来
-        public static List<String> traverseProperty(){
+        public static List<String> traverseProp(){
             List<String> pkgs = new ArrayList<>();
 
             for (String key : killProp.stringPropertyNames()) {
-                if(getProperty(key).equals(KILL_ENABLE))
+                if(getProp(key).equals(KILL_ENABLE))
                     pkgs.add(key);
             }
 

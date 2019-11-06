@@ -31,9 +31,13 @@
     </PreferenceCategory>
     <PreferenceCategory
         android:title="其它">
-    <Preference
-        android:title="关于"
-        android:summary="233333">
-    </Preference>
+        <Preference
+            android:title="帮助"
+            android:summary="切换开关后，需要重启应用才能变为夜间模式\n自动切换功能需要后台\n自动关闭后台需要root权限">
+        </Preference>
+        <Preference
+            android:title="关于"
+            android:summary="第一次开发安卓应用，多多指教(*¯︶¯*)">
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

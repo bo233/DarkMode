@@ -8,9 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bo233.darkmode.R;
-import com.bo233.darkmode.util.AppHelper;
 import com.bo233.darkmode.util.AppKiller;
-import com.bo233.darkmode.util.MyProperties;
+import com.bo233.darkmode.util.MyProp;
 
 public class SingleSettingDialog extends AlertDialog{
 
@@ -69,8 +68,8 @@ public class SingleSettingDialog extends AlertDialog{
                 SettingDialog.showSelfModeHelpDialog(context);
                 new SelfSettingNotification(context);
                 SingleSettingDialog.this.dismiss();
-                MyProperties.setProperty(MyProperties.SELF_SETTING_PKG_NAME, pkgName);
-//                MyProperties.setProperty(MyProperties.SELF_SETTING, "true");
+                MyProp.setProp(MyProp.SELF_SETTING_PKG_NAME, pkgName);
+//                MyProp.setProp(MyProp.SELF_SETTING, "true");
                 AppKiller.kill(pkgName);
             }
         });

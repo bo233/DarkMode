@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.bo233.darkmode.util.MyTimer;
+
 import java.util.List;
 
 /**
@@ -36,18 +38,19 @@ public class LightSensorUtils implements SensorEventListener{
     private boolean mIsContains = false;
     private  Boolean isBright ;//true 代表亮      false 代表暗
     private final Float criticalValue = 40.0f;  //  40.0f 代表人视觉的亮暗临界值
+    private MyTimer timer;
 
     private boolean isInit = false;
 
 
-    private LightSensorUtils() {
-    }
+    private LightSensorUtils() {}
 
     //需要用光感器的地方在 init 初始化
     public void init(Context context) {
         isInit = true;
         mContext = context;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
+        timer = new MyTimer(mContext);
         //获取手机上支持的传感器
         mList = mSensorManager.getSensorList(Sensor.TYPE_ALL);
         for (Sensor sensor : mList) {
@@ -106,11 +109,11 @@ public class LightSensorUtils implements SensorEventListener{
             // 下面就是每个人自己的逻辑了，根据拿到的 event.values[0] ,我写了一个把光的亮度分为 8 级的方法。
 //            getBrightString(event.values[0]);
             if(!isBright) {
-                MyProperties.init();
-                MyProperties.setProperty(MyProperties.KEY_SWITCH, "true");
+                MyProp.init();
+                MyProp.setProp(MyProp.KEY_SWITCH, "true");
                 AppKiller.killSelectedApps();
                 // TODO: 关闭"结束定时器"
-                MyTimer.cancelLightAlarm();
+                timer.cancelLightAlarm();
             }
         }
     }

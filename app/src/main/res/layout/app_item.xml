@@ -83,10 +83,11 @@
 
     <CheckBox
         android:id="@+id/multi_check_box"
-        android:focusable="false"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:focusable="false"
         android:visibility="invisible" />
 
 

@@ -13,13 +13,13 @@ import java.util.Locale;
 import static android.content.Context.ALARM_SERVICE;
 
 public class MyTimer {
-//    private MyProperties properties;
-    private static AlarmManager alarmManager;
-    private static Context context;
-    private static int mBeginHour, mBeginMin, mEndHour, mEndMin;
-    private static Calendar beginTime, endTime, lightBeginTime, lightEndTime;
-    private static Intent beginIntent, endIntent, lightBeginIntent, lightEndIntent;
-    private static PendingIntent beginPendingIntent, endPendingIntent, lightBeginPendingIntent, lightEndPendingIntent;
+//    private MyProp properties;
+    private AlarmManager alarmManager;
+    private Context context;
+    private int mBeginHour, mBeginMin, mEndHour, mEndMin;
+    private Calendar beginTime, endTime, lightBeginTime, lightEndTime;
+    private Intent beginIntent, endIntent, lightBeginIntent, lightEndIntent;
+    private PendingIntent beginPendingIntent, endPendingIntent, lightBeginPendingIntent, lightEndPendingIntent;
 
     public static final String BEGIN_HOUR = "beginning_hour";
     public static final String BEGIN_MIN = "beginning_min";
@@ -28,7 +28,7 @@ public class MyTimer {
 
     public MyTimer(Context c){
         context = c;
-//        properties = new MyProperties(MyProperties.SETTINGPATH);
+//        properties = new MyProp(MyProp.SETTINGPATH);
         alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 //        beginAlarmManager.setTimeZone("GMT+08:00");
 //        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -56,7 +56,7 @@ public class MyTimer {
     /**
      * 设置并启用按时间切换的闹钟
      */
-    public static void startTimeAlarm(){
+    public void startTimeAlarm(){
 //        if(updateTime())
 //            return false;
         updateTime();
@@ -74,13 +74,13 @@ public class MyTimer {
     /**
      *取消已设定的按时间切换的闹钟
      */
-    public static void cancelTimeAlarm(){
+    public void cancelTimeAlarm(){
         alarmManager.cancel(beginPendingIntent);
         alarmManager.cancel(endPendingIntent);
         Log.d("MyBroadcaster", "cancelTimeAlarm");
     }
 
-    public static void startLightAlarm(){
+    public void startLightAlarm(){
         updateTime();
 
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, lightBeginTime.getTimeInMillis(),
@@ -89,12 +89,12 @@ public class MyTimer {
                 AlarmManager.INTERVAL_DAY, lightEndPendingIntent);
     }
 
-    public static void cancelLightAlarm(){
+    public void cancelLightAlarm(){
         alarmManager.cancel(lightBeginPendingIntent);
         alarmManager.cancel(lightEndPendingIntent);
     }
 
-    public static String getStringTime(){
+    public String getStringTime(){
         updateTime();
         String s = new SimpleDateFormat("HH:mm", Locale.CHINA).format(beginTime.getTime()) + " - "+ new SimpleDateFormat("HH:mm", Locale.CHINA).format(endTime.getTime());
         return s;
@@ -103,12 +103,12 @@ public class MyTimer {
     /**
      * 从ini文件中读取设定的时间
      */
-    private static void updateTime(){
+    private void updateTime(){
         try{
-            mBeginHour = Integer.parseInt(MyProperties.getProperty(BEGIN_HOUR).trim());
-            mBeginMin = Integer.parseInt(MyProperties.getProperty(BEGIN_MIN).trim());
-            mEndHour = Integer.parseInt(MyProperties.getProperty(END_HOUR).trim());
-            mEndMin = Integer.parseInt(MyProperties.getProperty(END_MIN).trim());
+            mBeginHour = Integer.parseInt(MyProp.getProp(BEGIN_HOUR).trim());
+            mBeginMin = Integer.parseInt(MyProp.getProp(BEGIN_MIN).trim());
+            mEndHour = Integer.parseInt(MyProp.getProp(END_HOUR).trim());
+            mEndMin = Integer.parseInt(MyProp.getProp(END_MIN).trim());
         }catch (Exception e){
             e.printStackTrace();
         }

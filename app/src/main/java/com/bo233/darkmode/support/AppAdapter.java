@@ -1,5 +1,6 @@
 package com.bo233.darkmode.support;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ class ViewHolder {
 public class AppAdapter extends BaseAdapter {
     List<AppInfo> appList;
     LayoutInflater infater;
-    public HashSet<Long> selectedItems;
+    public static HashSet<Long> selectedItems = new HashSet<>();
 
     public static boolean multiChoiceMode = false;
 
@@ -33,7 +34,6 @@ public class AppAdapter extends BaseAdapter {
     {
         this.infater = LayoutInflater.from(context);
         this.appList = apps;
-        this.selectedItems = new HashSet<Long>();
     }
 
     @Override
@@ -74,6 +74,7 @@ public class AppAdapter extends BaseAdapter {
         holder.appIcon.setImageDrawable(appInfo.appIcon);
         holder.appName.setText(appInfo.appName);
         holder.pkgName.setText(appInfo.pkgName);
+        // TODO:硬编码改一下
         holder.modeState.setText("当前模式："+(appInfo.darkMode==0?"关闭":(appInfo.darkMode==1?"普通模式":"自带夜间模式")));
         holder.killState.setText("自动关闭后台："+(appInfo.killMode==0?"否":"是"));
 

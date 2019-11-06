@@ -1,29 +1,20 @@
 package com.bo233.darkmode.widget;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.bo233.darkmode.support.AppAdapter;
 import com.bo233.darkmode.support.AppInfo;
 import com.bo233.darkmode.util.AppHelper;
-import com.bo233.darkmode.util.MyProperties;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.bo233.darkmode.util.AppHelper.getAppList;
 
 public class UserAppListFragment extends ListFragment {
     private ArrayList<AppInfo> appList = new ArrayList<>();
-    private ListView listView;
 //    private ArrayList<AppInfo> systemAppList = new ArrayList<>();
     private int typeOfApps = AppHelper.USER_APP_LIST;
     AppAdapter adapter;
@@ -54,10 +45,14 @@ public class UserAppListFragment extends ListFragment {
 //        startActivity(appList.get(position).appIntent);
         if(AppAdapter.multiChoiceMode){
 //            appList.get(position)
-            if(adapter.selectedItems.contains((long)position))
-                adapter.selectedItems.remove((long)position);
-            else
-                adapter.selectedItems.add((long)position);
+            if(adapter.selectedItems.contains((long)position)) {
+                adapter.selectedItems.remove((long) position);
+                AppHelper.multiChoicePkgName.remove(appList.get(position).pkgName);
+            }
+            else {
+                adapter.selectedItems.add((long) position);
+                AppHelper.multiChoicePkgName.add(appList.get(position).pkgName);
+            }
 
         }
         else {
@@ -66,12 +61,12 @@ public class UserAppListFragment extends ListFragment {
         }
         //更新appList中的mode
         AppHelper.setUpdateAdapterParam(adapter, appList, position);
-//        String mode = MyProperties.ModeProperties.getProperty(appList.get(position).pkgName);
-//        if(mode == null || mode.equals(MyProperties.MODE_NORMAL))
+//        String mode = MyProp.ModeProp.getProp(appList.get(position).pkgName);
+//        if(mode == null || mode.equals(MyProp.MODE_NORMAL))
 //            appList.get(position).darkMode = 1;
-//        else if(mode.equals(MyProperties.MODE_OFF))
+//        else if(mode.equals(MyProp.MODE_OFF))
 //            appList.get(position).darkMode = 0;
-//        else if(mode.equals(MyProperties.MODE_OFF))
+//        else if(mode.equals(MyProp.MODE_OFF))
 //            appList.get(position).darkMode = 2;
         adapter.notifyDataSetChanged();
     }
