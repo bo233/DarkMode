@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/bo233/Projects/DarkMode/keyStore')
+            storePassword '990430ldb'
+            keyAlias = 'darkMode'
+            keyPassword '990430'
+        }
+    }
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.bo233.darkmode"
@@ -14,6 +22,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
