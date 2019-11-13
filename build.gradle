@@ -1,4 +1,7 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    var = '/Users/bo233/Projects/DarkMode/keyStore.keystore'
+    var1 = var
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     

@@ -2,9 +2,12 @@ package com.bo233.darkmode;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +32,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (!isModuleActive()){
-            Toast.makeText(this, "模块未激活", Toast.LENGTH_LONG).show();
-        }
-        else {
-            TextView textView = (TextView) findViewById(R.id.not_active_hint);
-            textView.setVisibility(View.GONE);
+            AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Oops!").setMessage("模块似乎未激活，请检查状态后重试。")
+                    .setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
 
-            request();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //处理确认按钮的点击事件
+                        }
+                    }).create();
+            dialog.show();
         }
+
+        TextView textView = findViewById(R.id.not_active_hint);
+        textView.setVisibility(View.GONE);
+
+        request();
 
     }
 
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean isModuleActive(){
+        Log.i("fake", "isModuleActive");
         return false;
     }
 
